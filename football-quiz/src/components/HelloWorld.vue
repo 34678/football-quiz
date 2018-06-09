@@ -10,6 +10,7 @@
     <wrong class="wrong" id="wrong"></wrong>
     <result v-on:draw="draw()" :correctTotal="correctTotal"></result>
     <lucky-draw></lucky-draw>
+    <guide v-on:back="back()" ></guide>
     <!-- 测试问题变化 -->
     <!-- <button>clickme</button> -->
   </div>
@@ -21,6 +22,7 @@ import Right from '../components/rightmask'
 import Wrong from '../components/wrongmask'
 import Result from '../components/result'
 import luckyDraw from '../components/luckyDraw'
+import Guide from '../components/guide'
 export default {
   name: 'HelloWorld',
   data () {
@@ -46,12 +48,16 @@ export default {
     Right,
     Wrong,
     Result,
-    luckyDraw
+    luckyDraw,
+    Guide 
   },
   mounted() {
     this.__init();
   },
   methods:{
+    back(){
+       this.$('.guide')[0].style.display = "none"
+    },
     draw(){
       /* 显示抽奖页面 */
       /* alert('显示抽奖页面') */
@@ -63,6 +69,7 @@ export default {
       vm.$('canvas').remove();
       /* 进入抽奖页面 */
       vm.$('.luckyDraw')[0].style.display = "block"
+       vm.$('.guide')[0].style.display = "block";
     },
     choose(val){
       // 判断答案是否正确
@@ -91,7 +98,7 @@ export default {
       var vm = this;
       var tmp = ++vm.current;
       if(tmp>3){
-        //答题完毕 出结果
+        //答题完毕 出
         /* alert('答题完毕 出结果') */
          vm.$('.result')[0].style.display = "block";
          vm.__animation();
@@ -492,6 +499,15 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
+    display: none;
+  }
+  .guide{
+            position: absolute;
+        top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
     display: none;
   }
 </style>

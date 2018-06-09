@@ -3,9 +3,12 @@
   <div class="result">
       <img :src="'../../static/images/result/'+correctTotal+'.png'">
       <div class="drawer" v-on:click="$emit('draw')"><img src="../../static/images/result/drawbtn.png"></div>
+        <footer></footer>
   </div>
+  
 </template>
 <script>
+import Footer from '../components/base/footer'
 export default {
     data(){
         return{
@@ -17,6 +20,9 @@ export default {
             type: Number,
             default: 0
         },
+    },
+    components:{
+        Footer 
     },
   mounted() {
       /* 五彩动画逻辑 */

@@ -9,6 +9,8 @@ import  './assets/js/flexlayout.js'
 /* import  './assets/sass/index.scss' */
 import axios from 'axios'
 Vue.prototype.$http = axios
+import jquery from 'jquery'
+Vue.prototype.$ = jquery
 
 Vue.config.productionTip = false
 

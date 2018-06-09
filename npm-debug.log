@@ -11,10 +11,9 @@
 4 verbose stack     at checkBinReferences_ (D:\nvm\v7.6.0\node_modules\npm\node_modules\read-package-json\read-json.js:320:45)
 4 verbose stack     at final (D:\nvm\v7.6.0\node_modules\npm\node_modules\read-package-json\read-json.js:354:3)
 4 verbose stack     at then (D:\nvm\v7.6.0\node_modules\npm\node_modules\read-package-json\read-json.js:124:5)
-4 verbose stack     at D:\nvm\v7.6.0\node_modules\npm\node_modules\read-package-json\read-json.js:311:12
-4 verbose stack     at D:\nvm\v7.6.0\node_modules\npm\node_modules\graceful-fs\graceful-fs.js:78:16
-4 verbose stack     at tryToString (fs.js:447:3)
-4 verbose stack     at FSReqWrap.readFileAfterClose [as oncomplete] (fs.js:434:12)
+4 verbose stack     at ReadFileContext.<anonymous> (D:\nvm\v7.6.0\node_modules\npm\node_modules\read-package-json\read-json.js:308:29)
+4 verbose stack     at ReadFileContext.callback (D:\nvm\v7.6.0\node_modules\npm\node_modules\graceful-fs\graceful-fs.js:78:16)
+4 verbose stack     at FSReqWrap.readFileAfterOpen [as oncomplete] (fs.js:357:13)
 5 verbose cwd C:\Users\Administrator\Desktop\football-quiz
 6 error Windows_NT 10.0.14393
 7 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "start"

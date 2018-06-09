@@ -3,6 +3,12 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import  './assets/css/reset.css'
+import  './assets/css/share.css'
+import  './assets/js/flexlayout.js'
+/* import  './assets/sass/index.scss' */
+import axios from 'axios'
+Vue.prototype.$http = axios
 
 Vue.config.productionTip = false
 

@@ -499,7 +499,7 @@ export default {
     width: 100%;
     height: 100%;
     background: white;
-    /*  display: none; */
+     display: none;
   }
   .luckyDraw{
         position: absolute;
@@ -507,7 +507,7 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    display: none;
+    /* display: none; */
   }
   .guide{
             position: absolute;

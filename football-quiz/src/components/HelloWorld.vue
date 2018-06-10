@@ -23,16 +23,18 @@ import Wrong from '../components/wrongmask'
 import Result from '../components/result'
 import luckyDraw from '../components/luckyDraw'
 import Guide from '../components/guide'
+import A from "../../static/images/time/1.png";
+
+import B from "../../static/images/time/2.png";
+import C from "../../static/images/time/3.png";
+import D from "../../static/images/time/4.png";
 export default {
   name: 'HelloWorld',
   data () {
     return {
       question: ' 2014 年巴西世界杯的吉祥物是什么？',
       option:[1,2,3,4],
-      images:['../../static/images/time/1.png',
-              '../../static/images/time/2.png',
-              '../../static/images/time/3.png',
-              '../../static/images/time/4.png'],
+      images:[A,B,C,D],
       current:0,
       // 存储问题的数据
       questmp:{},

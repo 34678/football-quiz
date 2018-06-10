@@ -1,4 +1,4 @@
-/* 抽奖页面 */
+/* 抽奖结果页面 */
 <template>
   <div class="luckyDraw" :style="{backgroundImage:'url('+bgclass[currentDraw-1]+')'}">
  
@@ -14,12 +14,17 @@
         <div class="item"></div>
         <div class="item"></div>
     </div>
-    <footer></footer>
+    <div class="footer">
+            <img src="../../static/images/qrcode.png">
+            <img>
+        <img class="sec" src="../../static/images/gamename.png">
+    </div>
+   
   </div>
 </template>
 <script>
 import Footer from "../components/base/footer";
-
+ 
 export default {
   data() {
     return {
@@ -30,8 +35,9 @@ export default {
   mounted() {
     this.__init();
   },
-  components: {
-    Footer
+   components: {
+    Footer,
+ 
   },
   methods: {
     __init() {
@@ -78,6 +84,29 @@ export default {
   }
   img {
     width: 100%;
+  }
+  .footer{
+        position: absolute;
+    bottom: 18px;
+    width: 100%;
+
+    & img:first-child{
+            @include dpr(width, 52px);
+    @include dpr(height, 52px);
+    margin-left: 10%;
+    }
+     & img:nth-child(2){
+       @include dpr(width, 100px);
+    @include dpr(height, 52px);
+        /* display: inline-block; */
+        visibility: hidden;
+    }
+    .sec{
+     /*  position: absolute; */
+     /* margin-left:60%;  */
+       @include dpr(width, 113px);
+    @include dpr(height, 52px);
+    }
   }
 }
 </style>

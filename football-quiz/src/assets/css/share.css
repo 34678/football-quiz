@@ -2,3 +2,15 @@ html,body{
     height: 100%;
     width: 100%;
 }
+@font-face
+{
+font-family: caisiNormal;
+src: url( "../../../static/font/normal/MYingHeiPRC-W3.ttf"  ),
+    url( "../../../static/font/normal/MYingHeiPRC-W3.eot" ) /* IE9+ */
+}
+@font-face
+{
+font-family: caisiBold;
+/* 需要加上防止浏览器不兼容 */
+src: url( "../../../static/font/bold/MYingHeiPRC-W7.ttf" );
+}

@@ -3,7 +3,7 @@
     <div class="main">
       <div id="time"><img :src="images[current]"></div>
       <div class="ques" id="ques">{{question}}</div>
-      <answer v-on:chooseans="choose($event)" :option="option"></answer>
+      <answer ref="answer" v-on:chooseans="choose($event)" :option="option"></answer>
       
     </div>
     <right class="right" id="right"></right>
@@ -24,7 +24,6 @@ import Result from '../components/result'
 import luckyDraw from '../components/luckyDraw'
 import Guide from '../components/guide'
 import A from "../../static/images/time/1.png";
-
 import B from "../../static/images/time/2.png";
 import C from "../../static/images/time/3.png";
 import D from "../../static/images/time/4.png";
@@ -43,6 +42,7 @@ export default {
       correctTotal:0,
       RAFId:undefined,
       stop:false,
+      openid:'https://docs.qq.com/doc/BqsXiL09UcT82GaYdI0TUkDi3gUSyP3VViow0IQmKC2Cjyb92sN59Q2dfqWC4WIxnx1dNh9Q3'
     }
   },
   components: {
@@ -81,6 +81,8 @@ export default {
         this.$('#right')[0].style.display = "block";
         setTimeout(function(){
            vm.$('#right')[0].style.display = "none";
+           /* 红色球的颜色要弄回去 */
+           vm.$refs.answer.biaohei(vm.answer);
            vm.newQuestion();
         },200);
         vm.correctTotal++;
@@ -91,9 +93,13 @@ export default {
         this.$('#wrong')[0].style.display = "block";
         setTimeout(function(){
            vm.$('#wrong')[0].style.display = "none";
+           vm.$refs.answer.biaohei(vm.answer);
            vm.newQuestion();
+           
         },200);
       }
+      this.$refs.answer.biaohong(this.answer,this.current);
+ 
     },
     /* 请求下一道题目 */
     newQuestion(){
@@ -493,7 +499,7 @@ export default {
     width: 100%;
     height: 100%;
     background: white;
-     display: none;
+    /*  display: none; */
   }
   .luckyDraw{
         position: absolute;

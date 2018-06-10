@@ -1,5 +1,4 @@
 <template>
- <!--  二维码和游戏名称的组件  -->
   <div class="footer">
       <img src="../../../static/images/qrcode.png">
       <img src="../../../static/images/gamename.png">
@@ -14,3 +13,4 @@ export default {}
     width: 100px;
 }
 </style>
+ 

@@ -3,12 +3,16 @@
   <div class="result">
       <img v-bind:src="Images[correctTotal]">
       <div class="drawer" v-on:click="$emit('draw')"><img src="../../static/images/result/drawbtn.png"></div>
-        <footer></footer>
+          <div class="footer">
+            <img src="../../static/images/qrcode.png">
+            <img>
+        <img class="sec" src="../../static/images/gamename.png">
+    </div>
   </div>
   
 </template>
 <script>
-import Footer from '../components/base/footer'
+ 
 import Image0 from "../../static/images/result/0.png"
 import Image1 from "../../static/images/result/1.png"
 import Image2 from "../../static/images/result/2.png"
@@ -28,7 +32,7 @@ export default {
         },
     },
     components:{
-        Footer 
+    
     },
   mounted() {
       /* 五彩动画逻辑 */
@@ -51,4 +55,27 @@ img{
     margin: 0 auto;
     margin-top: 11px;
 }
+  .footer{
+        position: absolute;
+    bottom: 18px;
+    width: 100%;
+
+    & img:first-child{
+            @include dpr(width, 52px);
+    @include dpr(height, 52px);
+    margin-left: 10%;
+    }
+     & img:nth-child(2){
+       @include dpr(width, 100px);
+    @include dpr(height, 52px);
+        /* display: inline-block; */
+        visibility: hidden;
+    }
+    .sec{
+     /*  position: absolute; */
+     /* margin-left:60%;  */
+       @include dpr(width, 113px);
+    @include dpr(height, 52px);
+    }
+  }
 </style>

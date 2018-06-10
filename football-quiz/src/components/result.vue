@@ -1,7 +1,7 @@
 /* 答题结果页面 */
 <template>
   <div class="result">
-      <img :src="'../../static/images/result/'+correctTotal+'.png'">
+      <img v-bind:src="Images[correctTotal]">
       <div class="drawer" v-on:click="$emit('draw')"><img src="../../static/images/result/drawbtn.png"></div>
         <footer></footer>
   </div>
@@ -9,12 +9,18 @@
 </template>
 <script>
 import Footer from '../components/base/footer'
+import Image0 from "../../static/images/result/0.png"
+import Image1 from "../../static/images/result/1.png"
+import Image2 from "../../static/images/result/2.png"
+import Image3 from "../../static/images/result/3.png"
+import Image4 from "../../static/images/result/4.png"
 export default {
     data(){
         return{
-
+                 Images:[Image0,Image1,Image2,Image3,Image4],
         }
     },
+   
     props: {
         correctTotal: {
             type: Number,

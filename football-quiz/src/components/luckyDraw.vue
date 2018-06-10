@@ -1,6 +1,6 @@
 /* 抽奖页面 */
 <template>
-  <div class="luckyDraw" v-bind:style="'backgroundImage:url(../../static/images/draw/'+currentDraw+'bg.png)'">
+  <div class="luckyDraw" :style="{backgroundImage:'url('+bgclass[currentDraw-1]+')'}">
  
       <!-- 出礼品区 -->
       <div class="draw">
@@ -19,10 +19,12 @@
 </template>
 <script>
 import Footer from "../components/base/footer";
+
 export default {
   data() {
     return {
-      currentDraw: 1
+      currentDraw: 1,
+      bgclass:[require('../../static/images/draw/1bg.png'),"../../static/images/draw/2bg.png"]
     };
   },
   mounted() {

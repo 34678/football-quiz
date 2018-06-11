@@ -69,9 +69,8 @@ export default {
       vm.RAFId = undefined;
       vm.stop = true;
       vm.$('canvas').remove();
-      /* 进入抽奖页面 */
-      vm.$('.luckyDraw')[0].style.display = "block"
-       vm.$('.guide')[0].style.display = "block";
+      /* 进入抽奖组件 */
+     
     },
     choose(val){
       // 判断答案是否正确
@@ -507,7 +506,7 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    /* display: none; */
+    display: none;
   }
   .guide{
             position: absolute;

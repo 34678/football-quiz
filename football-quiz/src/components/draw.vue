@@ -24,7 +24,7 @@ export default {
         "20元优惠券": 0,
         "30元优惠券": 1,
         "50元优惠券": 2,
-        "全国通兑电影票": 3
+        全国通兑电影票: 3
       },
       index: 0,
       /* 用于计算经过奖品多少次 */
@@ -92,8 +92,8 @@ export default {
       //滑完了一组图片就从头开始
       /* console.log(oUl.offsetLeft+"---"+oUl.offsetWidth/2);*/
       if (oUl.offsetLeft < -oUl.offsetWidth / 2) {
-          /* 转两次就跑到奖品 */
-          vm.count++;
+        /* 转两次就跑到奖品 */
+        vm.count++;
         oUl.style.left = "0";
       }
       if (oUl.offsetLeft > 0) {
@@ -104,18 +104,22 @@ export default {
             console.log('left',oUl.style.left) */
       /* 计算是否经过奖品 */
       var oLi = vm.$("#div1 ul li");
+      /* !!left在奖品的左边就停下来（为什么left不会用负的奖品的左边index） */
       var index1 = vm.index * oLi[0].offsetWidth;
-      var index2 = (vm.index + 1) * oLi[0].offsetWidth;
-      console.log('oUl.offsetLeft',oUl.offsetLeft)
-      if (oUl.offsetLeft < -index1 && oUl.offsetLeft > -index2) {
-         
-      } else {
-      }
+      console.log("oUl.offsetLeft", oUl.offsetLeft);
+
       if (vm.count < 2) {
-        //可以先执行四次
+        //可以先执行2次
         vm.timer = requestAnimationFrame(vm.move);
       } else {
-          oUl.style.left = index1;
+        oUl.style.left = index1;
+        /* 抽奖完成跳到luckdraw */
+        vm.$router.push({
+          name: "luckyDraw",
+          params: {
+            'award':vm.index
+          }
+        });
       }
     }
   }

@@ -3,9 +3,9 @@
   <div class="luckyDraw" :style="{backgroundImage:'url('+bgclass[currentDraw-1]+')'}">
  
       <!-- 出礼品区 -->
-      <div class="draw">
+      <div class="draw" >
           <!-- 滚动礼品的组件 --> 
-          <div></div>
+          <div class="myaward" :style="{backgroundImage:'url('+images[currentDraw-1]+')'}"></div>
           <div class="duihuan" v-on:click="duihuan()"></div>      
         </div>
         <!-- 功能按钮 -->
@@ -100,7 +100,8 @@ export default {
         "50元优惠券": 2,
         '全国通兑电影票': 3
       },
-      myawards: {}
+      myawards: {},
+      index:0
     };
   },
   mounted() {
@@ -187,7 +188,10 @@ export default {
     duihuan() {
       /* 兑换奖品 */
     },
-    __init() {},
+    __init() {
+      /* 初始化获得奖品的index */
+      this.index = this.$route.params.award;
+    },
     /* 丰富奖品的左右切换事件 */
     xiangce() {
       var vm = this;
@@ -229,14 +233,28 @@ export default {
 </script>
 <style scoped lang="scss" >
 .luckyDraw {
+
+    position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+ 
   background: white;
   background-size: 100%;
   background-repeat: no-repeat;
   .draw {
+    .myaward{
+     @include dpr(width, 152px);
+      @include dpr(height, 70px);
+      @include dpr(margin-top, 158px);
+      @include dpr(margin-left, 122px);
+      background-size: contain;
+    }
     .duihuan {
       @include dpr(width, 84px);
       @include dpr(height, 34px);
-      @include dpr(margin-top, 232px);
+      @include dpr(margin-top, 11px);
       @include dpr(margin-left, 149px);
       background-image: url("../../static/images/draw/btn/duihuan.png");
       background-size: contain;
@@ -248,7 +266,7 @@ export default {
     .item {
       @include dpr(width, 88px);
       @include dpr(height, 33px);
-      @include dpr(margin-left, 270px);
+      @include dpr(margin-left, 287px);
       @include dpr(margin-bottom, 6px);
       background-size: contain;
       background-repeat: no-repeat;

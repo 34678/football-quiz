@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Index from '@/components/index'
 import Draw from '@/components/draw'
+import luckyDraw from '@/components/luckyDraw'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/draw',
       name: 'draw',
       component: Draw
+    },
+    {
+      path: '/luckyDraw',
+      name: 'luckyDraw',
+      component: luckyDraw 
     }
   ]
 })

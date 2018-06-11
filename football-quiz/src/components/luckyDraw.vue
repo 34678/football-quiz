@@ -73,10 +73,11 @@
             <img>
         <img class="sec" src="../../static/images/gamename.png">
     </div>
-   
+   <guide v-on:back="back()" ></guide> 
   </div>
 </template>
 <script>
+import Guide from "../components/guide";
 export default {
   data() {
     return {
@@ -98,20 +99,92 @@ export default {
         "20元优惠券": 0,
         "30元优惠券": 1,
         "50元优惠券": 2,
-        '全国通兑电影票': 3
+        全国通兑电影票: 3
       },
       myawards: {},
-      index:0
+      index: 0,
+      /* 是否已经分享朋友圈 */
+      hasshare:false,
+      /* 请求抽奖接口需要的id */
+      id:''
     };
   },
   mounted() {
     this.__init();
   },
-  components: {},
+  components: {
+    Guide
+  },
   methods: {
-    drawagain(){
-        /* 在抽一次函数 */
+    back() {
+      this.$(".guide")[0].style.display = "none";
+    },
+    drawagain() {
+      /* 在抽一次函数 */
+      /* 朋友圈引导 */
+      if(!this.hasshare){
+        this.$(".guide")[0].style.display = "block";
+        /* 等待用户分享 */
+        wechatshare()
+      }else{
+        /* 直接抽奖 */
+        this.$router.push({name:"draw",params:{
+          id:this.id
+        }});
+      }
+      /* 分享朋友圈再回来可以拿到状态 */
+    },
+    wechatshare() {
+      var vm = this;
+      this.$http
+        .get("https://www.ipareto.com/zeissSjb/wechatjs/init", {
+          params: {}
+        })
+        .then(function(response) {
+          var rsp = response;
+          if (rsp.code == 0) {
+            data = rsp.data;
+            wx.config({
+              debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+              appId: data.appId, // 必填，公众号的唯一标识
+              timestamp: data.timestamp, // 必填，生成签名的时间戳
+              nonceStr: data.nonceStr, // 必填，生成签名的随机串
+              signature: data.signature, // 必填，签名
+              jsApiList: ["onMenuShareTimeline"] // 必填，需要使用的JS接口列表
+            });
+            wx.ready(function() {
+              console.log("微信js初始化成功");
+           
 
+              wx.onMenuShareTimeline({
+                title: "答世界杯题，免费赢取电影票", // 分享标题
+                link: data.url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl:
+                  "https://gss2.bdstatic.com/-fo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268/sign=76e20f3a2df5e0feee188e07646134e5/94cad1c8a786c917f9c3521ac93d70cf3ac757d4.jpg", // 分享图标
+                success: function() {
+                  // 用户点击了分享后执行的回调函数
+                   vm.hasshare = true;
+                },
+                cancel: function() {
+                  
+                }
+              });
+
+              // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+            });
+            wx.error(function(res) {
+              console.log("微信js初始化失败：" + res);
+            
+              // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+            });
+          } else {
+            console.log(rsp.msg);
+          }
+        })
+        .catch(function(response) {
+          //错误处理 比如出现一个蒙层显示网络错误
+          console.log(response);
+        });
     },
     myAwards() {
       var vm = this;
@@ -130,11 +203,9 @@ export default {
             vm.myawards = response.data.data;
             vm.$(".myawardlist")[0].style.display = "block";
             /* 点击黑色部分消失 */
-              vm
-              .$(".myawardlist")[0]
-              .addEventListener("click", function() {
-                vm.$(".myawardlist")[0].style.display = "none";
-              });
+            vm.$(".myawardlist")[0].addEventListener("click", function() {
+              vm.$(".myawardlist")[0].style.display = "none";
+            });
           } else {
             alert("请求数据错误");
           }
@@ -148,10 +219,8 @@ export default {
       var vm = this;
       vm.$(".duijiang")[0].style.display = "block";
       /* 点击黑色部分消失 */
-      vm
-      .$(".duijiang")[0]
-      .addEventListener("click", function() {
-      vm.$(".duijiang")[0].style.display = "none";
+      vm.$(".duijiang")[0].addEventListener("click", function() {
+        vm.$(".duijiang")[0].style.display = "none";
       });
     },
     getAwards() {
@@ -191,6 +260,7 @@ export default {
     __init() {
       /* 初始化获得奖品的index */
       this.index = this.$route.params.award;
+      this.id = this.$route.params.id;
     },
     /* 丰富奖品的左右切换事件 */
     xiangce() {
@@ -233,19 +303,18 @@ export default {
 </script>
 <style scoped lang="scss" >
 .luckyDraw {
-
-    position: absolute;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
- 
+
   background: white;
   background-size: 100%;
   background-repeat: no-repeat;
   .draw {
-    .myaward{
-     @include dpr(width, 152px);
+    .myaward {
+      @include dpr(width, 152px);
       @include dpr(height, 70px);
       @include dpr(margin-top, 158px);
       @include dpr(margin-left, 122px);
@@ -360,8 +429,8 @@ export default {
       }
     }
   }
-  .myawardlist{
-     width: 100%;
+  .myawardlist {
+    width: 100%;
     height: 100%;
     position: absolute;
     top: 0;
@@ -372,68 +441,66 @@ export default {
       @include dpr(width, 300px);
       @include dpr(height, 300px);
 
-       margin: 0 auto;
+      margin: 0 auto;
       margin-top: 50%;
       background: #2d3565;
       position: relative;
 
       padding: 1px;
-    padding-top: 67px;
-    box-sizing: border-box;
-          span {
-       position: absolute;
-    top: 20px;
-    left: 30%;
-    font-size: 16pt;
-    color: white;
+      padding-top: 67px;
+      box-sizing: border-box;
+      span {
+        position: absolute;
+        top: 20px;
+        left: 30%;
+        font-size: 16pt;
+        color: white;
       }
-      table{
-            border-collapse: separate;
-         border-spacing:3px;
+      table {
+        border-collapse: separate;
+        border-spacing: 3px;
       }
-      tr{
-        color:white;
+      tr {
+        color: white;
       }
-      & tr:first-child{
-          color:yellow;
+      & tr:first-child {
+        color: yellow;
       }
-
-
     }
   }
-  .duijiang{
-        width: 100%;
+  .duijiang {
+    width: 100%;
     height: 100%;
     position: absolute;
     top: 0;
     display: none;
     background: rgba(0, 0, 0, 0.7);
-        font-size: 11pt;
+    font-size: 11pt;
     line-height: 13pt;
     color: white;
-    
-    hr + div{
-      color:yellow;
+
+    hr + div {
+      color: yellow;
     }
-    .duijiang__wrapper{
-          padding: 0 17px;
+    .duijiang__wrapper {
+      padding: 0 17px;
       @include dpr(width, 300px);
       @include dpr(height, 300px);
       margin: 0 auto;
       margin-top: 50%;
       background: #2d3565;
- 
+
       box-sizing: border-box;
       position: relative;
-      div:first-child{
-              font-size: 18pt;
-    text-align: center;
-    padding-top: 13px;
-    padding-bottom: 40px;
-    }
-    div:nth-child(n+2){
-      margin-bottom: 14px;
-    }
+      div:first-child {
+        font-size: 18pt;
+        text-align: center;
+        padding-top: 13px;
+        padding-bottom: 40px;
+      }
+      div:nth-child(n + 2) {
+        margin-bottom: 14px;
+      }
     }
   }
   .footer {

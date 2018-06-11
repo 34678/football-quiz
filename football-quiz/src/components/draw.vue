@@ -117,7 +117,8 @@ export default {
         vm.$router.push({
           name: "luckyDraw",
           params: {
-            'award':vm.index
+            'award':vm.index,
+            'id':vm.$route.params.id
           }
         });
       }

@@ -11,6 +11,7 @@
     <result v-on:draw="draw()" :correctTotal="correctTotal"></result>
     <lucky-draw></lucky-draw>
     <guide v-on:back="back()" ></guide>
+    <draw></draw>
     <!-- 测试问题变化 -->
     <!-- <button>clickme</button> -->
   </div>
@@ -23,6 +24,7 @@ import Wrong from '../components/wrongmask'
 import Result from '../components/result'
 import luckyDraw from '../components/luckyDraw'
 import Guide from '../components/guide'
+import Draw from '../components/draw'
 import A from "../../static/images/time/1.png";
 import B from "../../static/images/time/2.png";
 import C from "../../static/images/time/3.png";
@@ -51,7 +53,8 @@ export default {
     Wrong,
     Result,
     luckyDraw,
-    Guide 
+    Guide ,
+    Draw
   },
   mounted() {
     this.__init();
@@ -516,5 +519,14 @@ export default {
     height: 100%;
     background: rgba(0,0,0,0.5);
     display: none;
+  }
+  .draw{
+                position: absolute;
+        top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    /* display: none; */
   }
 </style>

@@ -3,10 +3,12 @@
   <div class="result">
       <img v-bind:src="Images[correctTotal]">
       <div class="drawer" v-on:click="$emit('draw')"><img src="../../static/images/result/drawbtn.png"></div>
+          <div id="zhu">音乐：Cheery Monday（来自incompetech.com）</div>
           <div class="footer">
             <img src="../../static/images/qrcode.png">
             <img>
         <img class="sec" src="../../static/images/gamename.png">
+        <audio id="bgMusic" src="../../static/music/bg.m4a" autoplay="autoplay" loop="loop"></audio>
     </div>
   </div>
   
@@ -46,6 +48,14 @@ export default {
 };
 </script>
 <style scoped lang="scss" >
+#zhu{
+      text-align: center;
+      position: absolute;
+    font-size: 12pt;
+    width: 100%;
+    bottom: 6px;
+    left: 3px;
+}
 img{
         width: 100%;
 }

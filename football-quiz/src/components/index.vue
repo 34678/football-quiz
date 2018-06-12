@@ -9,7 +9,36 @@
   </div>
 </template>
 <script>
-export default {};
+export default {
+  mounted(){
+    /* alert(window.location.href); */
+   var str = window.location.href;
+   console.log(str)
+   var num = str.indexOf('openid')
+   if(num!=-1){
+    if(str.indexOf('&')!=-1){
+      //  还有其他参数
+      var num2 = str.indexOf('&');
+      var openid = str.substring(num+7,num2)
+      /* http://localhost/#/?openid=111&aa=1 */
+    }else{
+      var openid = str.substring(num+7)
+    }
+   }
+   /*  alert(openid); */
+
+   if(openid=="" || !openid){
+   
+     alert('无openid')
+   }else{
+     
+      alert('有openid')
+   }
+  },
+  methods:{
+   
+  }
+};
 </script>
 <style scoped lang="scss" >
 .index {

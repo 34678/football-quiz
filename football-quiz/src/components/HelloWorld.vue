@@ -9,8 +9,11 @@
     <right class="right" id="right"></right>
     <wrong class="wrong" id="wrong"></wrong>
     <result v-on:draw="draw()" :correctTotal="correctTotal"></result>
-    <lucky-draw></lucky-draw>
+ 
     <guide v-on:back="back()" ></guide> 
+    <audio id="bgMusic" src="../../static/music/bg.m4a" autoplay="autoplay" loop="loop"></audio>
+     <audio id="right1" src="../../static/music/right.m4a"   loop="loop"></audio>
+      <audio id="wrong1" src="../../static/music/wrong.m4a"   loop="loop"></audio>
     <!-- 测试问题变化 -->
     <!-- <button>clickme</button> -->
   </div>
@@ -21,7 +24,7 @@ import Answer from "../components/answer";
 import Right from "../components/rightmask";
 import Wrong from "../components/wrongmask";
 import Result from "../components/result";
-import luckyDraw from "../components/luckyDraw";
+ 
 import Guide from "../components/guide";
 import A from "../../static/images/time/1.png";
 import B from "../../static/images/time/2.png";
@@ -31,6 +34,7 @@ export default {
   name: "HelloWorld",
   data() {
     return {
+
       question: " 2014 年巴西世界杯的吉祥物是什么？",
       option: [1, 2, 3, 4],
       images: [A, B, C, D],
@@ -43,7 +47,7 @@ export default {
       RAFId: undefined,
       stop: false,
       openid:
-        "https://docs.qq.com/doc/BqsXiL09UcT82GaYdI0TUkDi3gUSyP3VViow0IQmKC2Cjyb92sN59Q2dfqWC4WIxnx1dNh9Q3",
+        "oYkYa03gpCorQzWW3GCM-uw10aCo",
         // 答题id
         id:0
     };
@@ -53,7 +57,7 @@ export default {
     Right,
     Wrong,
     Result,
-    luckyDraw,
+ 
     Guide
   },
   mounted() {
@@ -73,17 +77,24 @@ export default {
       vm.stop = true;
       vm.$("canvas").remove();
       /* 进入抽奖组件 */
-      vm.$router.push({name:"draw",params:{
-        id:vm.id
+      /* debugger; */
+      vm.$router.push({name:"luckyDraw",params:{
+        id:vm.id,
+        openid:vm.openid
       }});
     },
     choose(val) {
       // 判断答案是否正确
       var vm = this;
+      /* debugger; */
       if (val == this.answer) {
+        // 播放音乐
+        vm.$('#right1')[0].play();
         /* alert('正确') */
         this.$("#right")[0].style.display = "block";
         setTimeout(function() {
+          // 停止音乐
+          vm.$('#right1')[0].pause();
           vm.$("#right")[0].style.display = "none";
           /* 红色球的颜色要弄回去 */
           vm.$refs.answer.biaohei(vm.answer);
@@ -93,9 +104,12 @@ export default {
         console.log("答对题目数量", vm.correctTotal);
       } else {
         /* alert('错误') */
-
+         vm.$('#wrong1')[0].play();
+        // 播放音乐
         this.$("#wrong")[0].style.display = "block";
         setTimeout(function() {
+          // 停止音乐
+          vm.$('#wrong1')[0].pause();
           vm.$("#wrong")[0].style.display = "none";
           vm.$refs.answer.biaohei(vm.answer);
           vm.newQuestion();
@@ -129,31 +143,23 @@ export default {
     },
     submitScore() {
       var vm = this;
-      this.$http
-        .get("https://www.ipareto.com/zeissSjb/submitScore", {
-          params: {
-            openid: "oYkYa03gpCorQzWW3GCM-uw10aCo",
-            score: vm.correctTotal
-          }
-        })
-        .then(function(response) {
-          console.log(response);
-          /* !! */
-          response.data.msg = "ok";
-          if (response.data.msg == "ok") {
-            /* !! */
-             /* vm.id = response.data.data.id; */
-             vm.id =  "715282859960308";
-           /*  console.log(response.data); */
-          } else {
-            alert("请求问题数据错误");
-          }
-        })
-        .catch(function(response) {
-          //错误处理 比如出现一个蒙层显示网络错误
-          console.log(response);
-           vm.id =  "715282859960308";
-        });
+      vm.$.post("https://www.ipareto.com/zeissSjb/submitScore",{
+        'openid': vm.openid,
+            'score': vm.correctTotal},function(result){
+             /*  debugger; */
+              /* console.log(result); */
+            
+              var response = result;
+         
+              if (response.msg == "ok") {
+                /* console.log(response.data); */
+                vm.id = response.data.id;
+               /*  vm.id =  "715282859960308"; */
+              
+              } else {
+                alert("请求问题数据错误");
+              }
+    });
     },
     __init() {
       var vm = this;

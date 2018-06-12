@@ -1,8 +1,8 @@
 <template>
   <div class="answer">
     <div class="item" ref="a" v-on:click="$emit('chooseans','a')">
-        <div>A</div>
-        <div>{{option[0]}}</div>
+        <div >A</div>
+        <div class="caisi">{{option[0]}}</div>
     </div>
     <div class="item" ref="b" v-on:click="$emit('chooseans','b')">        
         <div>B</div>
@@ -10,7 +10,7 @@
     </div>
     <div class="item" ref="c" v-on:click="$emit('chooseans','c')">       
          <div>C</div>
-        <div class="caisi">{{option[2]}}</div>
+        <div >{{option[2]}}</div>
     </div>
     <div class="item" ref="d" v-on:click="$emit('chooseans','d');">       
          <div>D</div>
@@ -50,7 +50,8 @@ export default {
       /*  this.$refs[val].style.backgroundImage = this.map[val] */
       this.$refs[val].style.backgroundImage = "url(" + this.map[val] + ")";
       if(current ===3){
-          this.$('.caisi')[0].style.fontSize = "18pt"
+       /*  debugger; */
+          this.$('.caisi')[0].style.fontSize = "22pt"
       }
       /*  this.$refs[val].style.background = "black" */
       /*  console.log(this.map[val]) */

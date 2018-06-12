@@ -5,7 +5,8 @@
       <!-- 出礼品区 -->
       <div class="draw" >
           <!-- 滚动礼品的组件 --> 
-          <div class="myaward" :style="{backgroundImage:'url('+images[currentDraw-1]+')'}"></div>
+          <draw :type="type" :id="id" :openid="openid" v-if="refresh"></draw>
+         <!--  <div class="myaward" :style="{backgroundImage:'url('+images[currentDraw-1]+')'}"></div> -->
           <div class="duihuan" v-on:click="duihuan()"></div>      
         </div>
         <!-- 功能按钮 -->
@@ -68,19 +69,25 @@
         </div>
       </div>
       </div>
+      <div id="zhu">音乐：Cheery Monday（来自incompetech.com）</div>
     <div class="footer">
             <img src="../../static/images/qrcode.png">
             <img>
         <img class="sec" src="../../static/images/gamename.png">
     </div>
    <guide v-on:back="back()" ></guide> 
+   <audio id="bgMusic" src="../../static/music/bg.m4a" autoplay="autoplay" loop="loop"></audio>
   </div>
 </template>
 <script>
 import Guide from "../components/guide";
+import draw from '../components/draw'
 export default {
   data() {
     return {
+      openid:"",
+      type:'answer',
+      refresh:true,
       currentDraw: 1,
       bgclass: [
         require("../../static/images/draw/1bg.png"),
@@ -99,7 +106,13 @@ export default {
         "20元优惠券": 0,
         "30元优惠券": 1,
         "50元优惠券": 2,
-        全国通兑电影票: 3
+        "全国通兑电影票": 3
+      },
+      mapurl:{
+        "0": 'http://coupon.m.jd.com/coupons/show.action?key=1b5178199b5f45d689dbe1c2ffb26e07&roleId=12356682&to=mall.jd.com/index-739696.html',
+        "1": 'http://coupon.m.jd.com/coupons/show.action?key=e62fb9056c6b4a03841beadf0b3bc298&roleId=12356609&to=mall.jd.com/index-739696.html',
+        "2": 'http://coupon.m.jd.com/coupons/show.action?key=62d137163a7d44aaad6f61172a61b20f&roleId=12356526&to=mall.jd.com/index-739696.html',
+        "3": 'http://cdn.m2015.cn/zeiss/uv/os/',
       },
       myawards: {},
       index: 0,
@@ -113,7 +126,8 @@ export default {
     this.__init();
   },
   components: {
-    Guide
+    Guide,
+    draw
   },
   methods: {
     back() {
@@ -122,15 +136,23 @@ export default {
     drawagain() {
       /* 在抽一次函数 */
       /* 朋友圈引导 */
+  
+      alert('是否已经分享'+this.hasshare)
       if(!this.hasshare){
         this.$(".guide")[0].style.display = "block";
         /* 等待用户分享 */
-        wechatshare()
+        this.wechatshare()
       }else{
         /* 直接抽奖 */
-        this.$router.push({name:"draw",params:{
+        /* 重新加载一次抽奖 */
+        vm.type = 'share';
+        this.refresh = false
+        this.$nextTick(() => {
+        this.refresh = true
+        })
+       /*  this.$router.push({name:"draw",params:{
           id:this.id
-        }});
+        }}); */
       }
       /* 分享朋友圈再回来可以拿到状态 */
     },
@@ -158,9 +180,9 @@ export default {
 
               wx.onMenuShareTimeline({
                 title: "答世界杯题，免费赢取电影票", // 分享标题
-                link: data.url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                link: 'https://www.ipareto.com/zeissSjb/wechat/authorize?returnUrl=https://www.ipareto.com/dist/index.html', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl:
-                  "https://gss2.bdstatic.com/-fo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268/sign=76e20f3a2df5e0feee188e07646134e5/94cad1c8a786c917f9c3521ac93d70cf3ac757d4.jpg", // 分享图标
+                 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528789842537&di=c9aae9e15fdf1890e37fae56fbd7a478&imgtype=0&src=http%3A%2F%2Fimg2.fengniao.com%2Fproduct%2F95%2F746%2FceZckZsl6oBUA.jpg', // 分享图标
                 success: function() {
                   // 用户点击了分享后执行的回调函数
                    vm.hasshare = true;
@@ -192,7 +214,7 @@ export default {
       /* ！！ */
       this.$http
         .get(
-          "https://www.ipareto.com/zeissSjb/getAwardRecords?openid=oYkYa03gpCorQzWW3GCM-uw10aCo",
+          "https://www.ipareto.com/zeissSjb/getAwardRecords?openid="+vm.openid,
           {
             params: {}
           }
@@ -256,11 +278,20 @@ export default {
     },
     duihuan() {
       /* 兑换奖品 */
+      
+      window.location.href =  this.mapurl[this.index];
+
     },
     __init() {
       /* 初始化获得奖品的index */
-      this.index = this.$route.params.award;
+     /*  this.index = this.$route.params.award; */
+  /*  debugger; */
       this.id = this.$route.params.id;
+      this.openid = this.$route.params.openid;
+      this.refresh = false
+        this.$nextTick(() => {
+        this.refresh = true
+        })
     },
     /* 丰富奖品的左右切换事件 */
     xiangce() {
@@ -302,6 +333,14 @@ export default {
 };
 </script>
 <style scoped lang="scss" >
+#zhu{
+      text-align: center;
+      position: absolute;
+    font-size: 12pt;
+    width: 100%;
+    bottom: 6px;
+    left: 3px;
+}
 .luckyDraw {
   position: absolute;
   top: 0;
@@ -332,6 +371,8 @@ export default {
   }
   .toolbar {
     @include dpr(margin-top, -95px);
+    display: inline-block;
+    width: 22px;
     .item {
       @include dpr(width, 88px);
       @include dpr(height, 33px);

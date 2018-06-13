@@ -8,7 +8,7 @@
             <img src="../../static/images/qrcode.png">
             <img>
         <img class="sec" src="../../static/images/gamename.png">
-        <audio id="bgMusic" src="../../static/music/bg.m4a" autoplay="autoplay" loop="loop"></audio>
+        <audio id="bgMusic" src="https://www.ipareto.com/dist/static/music/bg.m4a" autoplay="autoplay" loop="loop"></audio>
     </div>
   </div>
   

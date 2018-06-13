@@ -11,9 +11,9 @@
     <result v-on:draw="draw()" :correctTotal="correctTotal"></result>
  
     <guide v-on:back="back()" ></guide> 
-    <audio id="bgMusic" src="../../static/music/bg.m4a" autoplay="autoplay" loop="loop"></audio>
-     <audio id="right1" src="../../static/music/right.m4a"   loop="loop"></audio>
-      <audio id="wrong1" src="../../static/music/wrong.m4a"   loop="loop"></audio>
+    <audio id="bgMusic" src="https://www.ipareto.com/dist/static/music/bg.m4a" autoplay="autoplay" loop="loop"></audio>
+     <audio id="right1" src="https://www.ipareto.com/dist/static/music/right.m4a"   loop="loop"></audio>
+      <audio id="wrong1" src="https://www.ipareto.com/dist/static/music/wrong.m4a"   loop="loop"></audio>
     <!-- 测试问题变化 -->
     <!-- <button>clickme</button> -->
   </div>
@@ -99,7 +99,7 @@ export default {
           /* 红色球的颜色要弄回去 */
           vm.$refs.answer.biaohei(vm.answer);
           vm.newQuestion();
-        }, 200);
+        }, 3000);
         vm.correctTotal++;
         console.log("答对题目数量", vm.correctTotal);
       } else {
@@ -113,7 +113,7 @@ export default {
           vm.$("#wrong")[0].style.display = "none";
           vm.$refs.answer.biaohei(vm.answer);
           vm.newQuestion();
-        }, 200);
+        }, 3000);
       }
       this.$refs.answer.biaohong(this.answer, this.current);
     },

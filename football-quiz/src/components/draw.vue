@@ -73,16 +73,16 @@ export default {
                         alert("抽奖结果"+response.data)
                         /* var data = "20元优惠券"; */
                         var data = response.data;
-                        /* debugger; */
+                     
                               var index = vm.map[data];
   
                               if(index!==3){
-                               debugger;
+                              
                                vm.index = index;
                                vm.$emit('drawdone',[index])
                               }else{
                                  vm.index = index;
-                                 vm.$emit('drawdone',[index,data.movieCode])
+                                 vm.$emit('drawdone',[index,response.movieCode])
                               }
                            
                                    /*  console.log("this.$route.params.paicheNo", this.$route.params.id); */
@@ -134,7 +134,7 @@ export default {
       oUl.style.width = oLi[0].offsetWidth * oLi.length + "px";
       vm.oUl = oUl;
       //移动速度
-      var speed = 3;
+      var speed = 5;
       vm.speed = speed;
       //鼠标移开
       //定时器  控制移动的时间

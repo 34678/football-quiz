@@ -3,14 +3,21 @@
  <!--  二维码和游戏名称的组件  -->
   <div class="index">
       <img src="../../static/images/bigbg.png">
-      <div class="start" v-on:click="$router.push('HelloWorld')">
+      <div class="start" v-on:click="$router.push({name:'HelloWorld',params:{'openid':openid}})">
           <img src="../../static/images/start.png">
       </div>
   </div>
 </template>
 <script>
 export default {
+  data(){
+    return {
+      openid:0,
+    }
+  },
   mounted() {
+    // 去掉滚动条
+   /*  document.documentElement.style.width = window.innerWidth + 'px'; */
     /* alert(window.location.href); */
     var str = window.location.href;
     console.log(str);
@@ -31,6 +38,7 @@ export default {
       alert("无openid");
     } else {
       alert("有openid");
+      this.openid = openid;
     }
   },
   methods: {

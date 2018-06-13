@@ -76,7 +76,7 @@
         <img class="sec" src="../../static/images/gamename.png">
     </div>
    <guide v-on:back="back()" ></guide> 
-   <audio id="bgMusic" src="../../static/music/bg.m4a" autoplay="autoplay" loop="loop"></audio>
+   <audio id="bgMusic" src="http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/bg.m4a" autoplay="autoplay" loop="loop"></audio>
   </div>
 </template>
 <script>
@@ -132,7 +132,7 @@ export default {
   },
   methods: {
     drawdone(val){
-      debugger;
+      /* debugger; */
       console.log('drawdone',val);
       this.index = val[0];
       this.mapurl[3] = val[1];
@@ -240,7 +240,7 @@ export default {
     __init() {
       /* 初始化获得奖品的index */
      /*  this.index = this.$route.params.award; */
-   debugger;
+  /*  debugger; */
       this.id = this.$route.params.id;
       this.openid = this.$route.params.openid;
       this.hasshare = this.$route.params.hasshare;
@@ -511,7 +511,7 @@ export default {
       margin-left: 10%;
     }
     & img:nth-child(2) {
-      width:46%;
+      width:31%;
       /* @include dpr(width, 46%); */
       @include dpr(height, 52px);
       /* display: inline-block; */

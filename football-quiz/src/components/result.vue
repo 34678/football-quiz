@@ -16,7 +16,7 @@
             <img src="../../static/images/qrcode.png">
             <img>
         <img class="sec" src="../../static/images/gamename.png">
-        <audio id="bgMusic" src="https://www.ipareto.com/dist/static/music/bg.m4a" autoplay="autoplay" loop="loop"></audio>
+        <audio id="bgMusic" src="http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/bg.m4a" autoplay="autoplay" loop="loop"></audio>
     </div>
   </div>
   
@@ -109,7 +109,7 @@ img{
     margin-left: 10%;
     }
      & img:nth-child(2){
-       width:46%;
+       width:31%;
       /*  @include dpr(width, 46%18px); */
     @include dpr(height, 52px);
         /* display: inline-block; */

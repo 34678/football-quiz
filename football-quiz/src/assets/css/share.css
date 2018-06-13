@@ -1,8 +1,12 @@
+
 html,body{
     height: 100%;
     width: 100%;
     font-family: caisiNormal!important;
     overflow-x: hidden;
+}
+body{
+    position: fixed;
 }
 @font-face
 {

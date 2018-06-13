@@ -11,9 +11,9 @@
     <result v-on:draw="draw()" :correctTotal="correctTotal"></result>
  
     <guide v-on:back="back()" ></guide> 
-    <audio id="bgMusic" src="https://www.ipareto.com/dist/static/music/bg.m4a" autoplay="autoplay" loop="loop"></audio>
-     <audio id="right1" src="https://www.ipareto.com/dist/static/music/right.m4a"   loop="loop"></audio>
-      <audio id="wrong1" src="https://www.ipareto.com/dist/static/music/wrong.m4a"   loop="loop"></audio>
+    <audio id="bgMusic" src="http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/bg.m4a" autoplay="autoplay" loop="loop"></audio>
+     <audio id="right1" src="http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/right.m4a"   loop="loop"></audio>
+      <audio id="wrong1" src="http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/wrong.mp3"   loop="loop"></audio>
     <!-- 测试问题变化 -->
     <!-- <button>clickme</button> -->
   </div>
@@ -61,8 +61,12 @@ export default {
     Guide
   },
   mounted() {
+    debugger;
+    /* document.documentElement.style.width = window.innerWidth-3 + 'px'; */
     this.__init();
       //  微信初始化
+      this.openid = this.$route.params.openid;
+/*       debugger; */
      this.wechatshare();
   },
   methods: {
@@ -130,7 +134,7 @@ export default {
       vm.stop = true;
       vm.$("canvas").remove();
       /* 进入抽奖组件 */
-      debugger;
+    /*   debugger; */
       vm.$router.push({name:"luckyDraw",params:{
         id:vm.id,
         openid:vm.openid,
@@ -153,7 +157,7 @@ export default {
           /* 红色球的颜色要弄回去 */
           vm.$refs.answer.biaohei(vm.answer);
           vm.newQuestion();
-        }, 200);
+        }, 3000);
         vm.correctTotal++;
         console.log("答对题目数量", vm.correctTotal);
       } else {
@@ -167,7 +171,7 @@ export default {
           vm.$("#wrong")[0].style.display = "none";
           vm.$refs.answer.biaohei(vm.answer);
           vm.newQuestion();
-        }, 200);
+        }, 3000);
       }
       this.$refs.answer.biaohong(this.answer, this.current);
     },
@@ -200,7 +204,7 @@ export default {
       vm.$.post("https://www.ipareto.com/zeissSjb/submitScore",{
         'openid': vm.openid,
             'score': vm.correctTotal},function(result){
-             /*  debugger; */
+             
               /* console.log(result); */
             
               var response = result;

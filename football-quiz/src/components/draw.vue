@@ -8,6 +8,7 @@
                     <li id="2"><img src="../../static/images/draw/award/30.png"/></li>
                     <li id="3"><img src="../../static/images/draw/award/50.png"/></li>
                     <li id="4"><img src="../../static/images/draw/award/movie.png"/></li>
+                    <li id="4"><img src="../../static/images/draw/award/500.png"/></li>
                 </ul>
             </div>
         </div>
@@ -24,7 +25,8 @@ export default {
         "20元优惠券": 0,
         "30元优惠券": 1,
         "50元优惠券": 2,
-        '全国通兑电影票': 3
+        '全国通兑电影票': 3,
+        '500元优惠券':4
       },
       index: -1,
       /* 用于计算经过奖品多少次 */
@@ -73,7 +75,16 @@ export default {
                         var data = response.data;
                         /* debugger; */
                               var index = vm.map[data];
-                              vm.index = index;
+  
+                              if(index!==3){
+                               debugger;
+                               vm.index = index;
+                               vm.$emit('drawdone',[index])
+                              }else{
+                                 vm.index = index;
+                                 vm.$emit('drawdone',[index,data.movieCode])
+                              }
+                           
                                    /*  console.log("this.$route.params.paicheNo", this.$route.params.id); */
                              //抽奖成功才轮播
                           vm.lunboinit();
@@ -132,6 +143,46 @@ export default {
       /*   var timer2=setInterval(index,1000);*/
     },
     move() {
+      /* 没有奖品 返回 */
+      
+      var vm = this;
+      var oUl = vm.$("#div1 ul")[0];
+      var speed = vm.speed;
+      //滑完了一组图片就从头开始
+      /* console.log(oUl.offsetLeft+"---"+oUl.offsetWidth/2);*/
+      if (oUl.offsetLeft < -oUl.offsetWidth / 2) {
+        /* 转两次就跑到奖品 */
+        vm.count++;
+        oUl.style.left = "0";
+      }
+      if (oUl.offsetLeft > 0) {
+        oUl.style.left = -oUl.offsetWidth / 2 + "px";
+      }
+      oUl.style.left = oUl.offsetLeft - speed + "px";
+      /* console.log('oUl.offsetLeft',oUl.offsetLeft);
+            console.log('left',oUl.style.left) */
+      /* 计算是否经过奖品 */
+      var oLi = vm.$("#div1 ul li");
+      /* !!left在奖品的左边就停下来（为什么left不会用负的奖品的左边index） */
+      var index1 = vm.index * oLi[0].offsetWidth;
+      // console.log("oUl.offsetLeft", oUl.offsetLeft);
+       
+      if (vm.count < 2) {
+        //可以先执行2次
+        vm.timer = requestAnimationFrame(vm.move);
+      } else {
+        oUl.style.left = -index1 + "px";
+        /* 抽奖完成跳到luckdraw */
+       /*  vm.$router.push({
+          name: "luckyDraw",
+          params: {
+            'award':vm.index,
+            'id':vm.$route.params.id
+          }
+        }); */
+      }
+    },
+     move2() {
       /* 没有奖品 返回 */
       
       var vm = this;

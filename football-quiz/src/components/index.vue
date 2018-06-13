@@ -10,41 +10,39 @@
 </template>
 <script>
 export default {
-  mounted(){
+  mounted() {
     /* alert(window.location.href); */
-   var str = window.location.href;
-   console.log(str)
-   var num = str.indexOf('openid')
-   if(num!=-1){
-    if(str.indexOf('&')!=-1){
-      //  还有其他参数
-      var num2 = str.indexOf('&');
-      var openid = str.substring(num+7,num2)
-      /* http://localhost/#/?openid=111&aa=1 */
-    }else{
-      var openid = str.substring(num+7)
+    var str = window.location.href;
+    console.log(str);
+    var num = str.indexOf("openid");
+    if (num != -1) {
+      if (str.indexOf("&") != -1) {
+        //  还有其他参数
+        var num2 = str.indexOf("&");
+        var openid = str.substring(num + 7, num2);
+        /* http://localhost/#/?openid=111&aa=1 */
+      } else {
+        var openid = str.substring(num + 7);
+      }
     }
-   }
-   /*  alert(openid); */
+    /*  alert(openid); */
 
-   if(openid=="" || !openid){
-   
-     alert('无openid')
-   }else{
-     
-      alert('有openid')
-   }
+    if (openid == "" || !openid) {
+      alert("无openid");
+    } else {
+      alert("有openid");
+    }
   },
-  methods:{
-   
+  methods: {
+
   }
 };
 </script>
 <style scoped lang="scss" >
 .index {
-      height: 100%;
-    width: 100%;
-    background: white;
+  height: 100%;
+  width: 100%;
+  background: white;
   img {
     width: 100%;
   }

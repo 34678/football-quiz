@@ -34,7 +34,7 @@ export default {
   name: "HelloWorld",
   data() {
     return {
-
+      hasshare:false,
       question: " 2014 年巴西世界杯的吉祥物是什么？",
       option: [1, 2, 3, 4],
       images: [A, B, C, D],
@@ -62,8 +62,61 @@ export default {
   },
   mounted() {
     this.__init();
+      //  微信初始化
+     this.wechatshare();
   },
   methods: {
+       wechatshare() {
+/*          debugger; */
+      var vm = this;
+      this.$http
+        .get("https://www.ipareto.com/zeissSjb/wechatjs/init", {
+          params: {}
+        })
+        .then(function(response) {
+          var rsp = response;
+          if (rsp.code == 0) {
+            data = rsp.data;
+            wx.config({
+              debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+              appId: data.appId, // 必填，公众号的唯一标识
+              timestamp: data.timestamp, // 必填，生成签名的时间戳
+              nonceStr: data.nonceStr, // 必填，生成签名的随机串
+              signature: data.signature, // 必填，签名
+              jsApiList: ["onMenuShareTimeline"] // 必填，需要使用的JS接口列表
+            });
+            wx.ready(function() {
+              alert("微信js初始化成功");
+
+              wx.onMenuShareTimeline({
+                title: "答世界杯题，免费赢取电影票", // 分享标题
+                link:
+                  "https://www.ipareto.com/zeissSjb/wechat/authorize?returnUrl=https://www.ipareto.com/dist/index.html", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl:
+                  "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528789842537&di=c9aae9e15fdf1890e37fae56fbd7a478&imgtype=0&src=http%3A%2F%2Fimg2.fengniao.com%2Fproduct%2F95%2F746%2FceZckZsl6oBUA.jpg", // 分享图标
+                success: function() {
+                  // 用户点击了分享后执行的回调函数
+                  vm.hasshare = true;
+                },
+                cancel: function() {}
+              });
+
+              // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+            });
+            wx.error(function(res) {
+              alert("微信js初始化失败：" + res);
+
+              // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+            });
+          } else {
+            console.log(rsp.msg);
+          }
+        })
+        .catch(function(response) {
+          //错误处理 比如出现一个蒙层显示网络错误
+          alert(response);
+        });
+    },
     back() {
       this.$(".guide")[0].style.display = "none";
     },
@@ -77,10 +130,11 @@ export default {
       vm.stop = true;
       vm.$("canvas").remove();
       /* 进入抽奖组件 */
-      /* debugger; */
+      debugger;
       vm.$router.push({name:"luckyDraw",params:{
         id:vm.id,
-        openid:vm.openid
+        openid:vm.openid,
+        hasshare:vm.hasshare
       }});
     },
     choose(val) {
@@ -99,7 +153,7 @@ export default {
           /* 红色球的颜色要弄回去 */
           vm.$refs.answer.biaohei(vm.answer);
           vm.newQuestion();
-        }, 3000);
+        }, 200);
         vm.correctTotal++;
         console.log("答对题目数量", vm.correctTotal);
       } else {
@@ -113,7 +167,7 @@ export default {
           vm.$("#wrong")[0].style.display = "none";
           vm.$refs.answer.biaohei(vm.answer);
           vm.newQuestion();
-        }, 3000);
+        }, 200);
       }
       this.$refs.answer.biaohong(this.answer, this.current);
     },

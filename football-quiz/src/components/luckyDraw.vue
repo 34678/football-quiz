@@ -5,7 +5,7 @@
       <!-- 出礼品区 -->
       <div class="draw" >
           <!-- 滚动礼品的组件 --> 
-          <draw :type="type" :id="id" :openid="openid" v-if="refresh"></draw>
+          <draw v-on:drawdone="drawdone($event)" :type="type" :id="id" :openid="openid" v-if="refresh"></draw>
          <!--  <div class="myaward" :style="{backgroundImage:'url('+images[currentDraw-1]+')'}"></div> -->
           <div class="duihuan" v-on:click="duihuan()"></div>      
         </div>
@@ -106,18 +106,19 @@ export default {
         "20元优惠券": 0,
         "30元优惠券": 1,
         "50元优惠券": 2,
-        "全国通兑电影票": 3
+        "全国通兑电影票": 3,
+        '500元优惠券':4
       },
       mapurl:{
         "0": 'http://coupon.m.jd.com/coupons/show.action?key=1b5178199b5f45d689dbe1c2ffb26e07&roleId=12356682&to=mall.jd.com/index-739696.html',
         "1": 'http://coupon.m.jd.com/coupons/show.action?key=e62fb9056c6b4a03841beadf0b3bc298&roleId=12356609&to=mall.jd.com/index-739696.html',
         "2": 'http://coupon.m.jd.com/coupons/show.action?key=62d137163a7d44aaad6f61172a61b20f&roleId=12356526&to=mall.jd.com/index-739696.html',
-        "3": 'http://cdn.m2015.cn/zeiss/uv/os/',
+        "3": '',
+        "4" : 'http://cdn.m2015.cn/zeiss/uv/os/',
+
       },
       myawards: {},
       index: 0,
-      /* 是否已经分享朋友圈 */
-      hasshare:false,
       /* 请求抽奖接口需要的id */
       id:''
     };
@@ -130,18 +131,21 @@ export default {
     draw
   },
   methods: {
+    drawdone(val){
+      debugger;
+      console.log('drawdone',val);
+      this.index = val[0];
+      this.mapurl[3] = val[1];
+    },
     back() {
       this.$(".guide")[0].style.display = "none";
     },
     drawagain() {
       /* 在抽一次函数 */
       /* 朋友圈引导 */
-  
       alert('是否已经分享'+this.hasshare)
       if(!this.hasshare){
         this.$(".guide")[0].style.display = "block";
-        /* 等待用户分享 */
-        this.wechatshare()
       }else{
         /* 直接抽奖 */
         /* 重新加载一次抽奖 */
@@ -155,58 +159,6 @@ export default {
         }}); */
       }
       /* 分享朋友圈再回来可以拿到状态 */
-    },
-    wechatshare() {
-      var vm = this;
-      this.$http
-        .get("https://www.ipareto.com/zeissSjb/wechatjs/init", {
-          params: {}
-        })
-        .then(function(response) {
-          var rsp = response;
-          if (rsp.code == 0) {
-            data = rsp.data;
-            wx.config({
-              debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-              appId: data.appId, // 必填，公众号的唯一标识
-              timestamp: data.timestamp, // 必填，生成签名的时间戳
-              nonceStr: data.nonceStr, // 必填，生成签名的随机串
-              signature: data.signature, // 必填，签名
-              jsApiList: ["onMenuShareTimeline"] // 必填，需要使用的JS接口列表
-            });
-            wx.ready(function() {
-              console.log("微信js初始化成功");
-           
-
-              wx.onMenuShareTimeline({
-                title: "答世界杯题，免费赢取电影票", // 分享标题
-                link: 'https://www.ipareto.com/zeissSjb/wechat/authorize?returnUrl=https://www.ipareto.com/dist/index.html', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                imgUrl:
-                 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528789842537&di=c9aae9e15fdf1890e37fae56fbd7a478&imgtype=0&src=http%3A%2F%2Fimg2.fengniao.com%2Fproduct%2F95%2F746%2FceZckZsl6oBUA.jpg', // 分享图标
-                success: function() {
-                  // 用户点击了分享后执行的回调函数
-                   vm.hasshare = true;
-                },
-                cancel: function() {
-                  
-                }
-              });
-
-              // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
-            });
-            wx.error(function(res) {
-              console.log("微信js初始化失败：" + res);
-            
-              // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-            });
-          } else {
-            console.log(rsp.msg);
-          }
-        })
-        .catch(function(response) {
-          //错误处理 比如出现一个蒙层显示网络错误
-          console.log(response);
-        });
     },
     myAwards() {
       var vm = this;
@@ -278,16 +230,20 @@ export default {
     },
     duihuan() {
       /* 兑换奖品 */
-      
+      if(this.index!==3){
       window.location.href =  this.mapurl[this.index];
+      }else{
+        alert('兑奖码'+this.mapurl[this.index]);
+      }
 
     },
     __init() {
       /* 初始化获得奖品的index */
      /*  this.index = this.$route.params.award; */
-  /*  debugger; */
+   debugger;
       this.id = this.$route.params.id;
       this.openid = this.$route.params.openid;
+      this.hasshare = this.$route.params.hasshare;
       this.refresh = false
         this.$nextTick(() => {
         this.refresh = true
@@ -555,7 +511,8 @@ export default {
       margin-left: 10%;
     }
     & img:nth-child(2) {
-      @include dpr(width, 100px);
+      width:46%;
+      /* @include dpr(width, 46%); */
       @include dpr(height, 52px);
       /* display: inline-block; */
       visibility: hidden;

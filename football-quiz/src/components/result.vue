@@ -1,8 +1,16 @@
 /* 答题结果页面 */
 <template>
   <div class="result">
-      <img v-bind:src="Images[correctTotal]">
-      <div class="drawer" v-on:click="$emit('draw')"><img src="../../static/images/result/drawbtn.png"></div>
+     <div style="position:relative">
+       <img v-bind:src="Images[correctTotal]">
+       <div class="text">
+          <div class="first">"{{text1[correctTotal]}}"</div>
+           <div class="second">{{text2[correctTotal]}}</div>
+        </div></div> 
+      <div class="drawer" v-on:click="$emit('draw')">
+        <img src="../../static/images/result/drawbtn.png">
+        
+        </div>
           <div id="zhu">音乐：Cheery Monday（来自incompetech.com）</div>
           <div class="footer">
             <img src="../../static/images/qrcode.png">
@@ -24,6 +32,8 @@ export default {
     data(){
         return{
                  Images:[Image0,Image1,Image2,Image3,Image4],
+                 text1:['伪球迷','伪球迷','铁杆粉','懂球帝','MVP'],
+                 text2:['修炼失败，需要回炉重造一下','修炼失败，需要回炉重造一下','万事俱备，只差一pick','认过眼神，是会踢球的人','国足就靠你振兴了！']
         }
     },
    
@@ -43,11 +53,32 @@ export default {
   methods: {
     __init(){
       /* 抽奖入口 */
+  /*     debugger;
+      var height = this.$('img')[0].style.height;
+      var top = height*0.6;
+      this.$('.text')[0].style.top = top; */
     },
   }
 };
 </script>
 <style scoped lang="scss" >
+.text{
+      position: absolute;
+  /*       top: 392px;
+    right: 22px; */
+       @include dpr(bottom, 20%);
+    @include dpr(right, 5%);
+    line-height: 37pt;
+  color:white;
+  .first{
+    font-family: caisiBold;
+    font-size:30pt;
+  }
+  .second{
+font-family: caisiNormal;
+    font-size:12pt;
+  }
+}
 #zhu{
       text-align: center;
       position: absolute;
@@ -64,6 +95,8 @@ img{
     @include dpr(height, 53px);
     margin: 0 auto;
     margin-top: 11px;
+        z-index: 2;
+    position: relative;
 }
   .footer{
         position: absolute;
@@ -76,7 +109,8 @@ img{
     margin-left: 10%;
     }
      & img:nth-child(2){
-       @include dpr(width, 100px);
+       width:46%;
+      /*  @include dpr(width, 46%18px); */
     @include dpr(height, 52px);
         /* display: inline-block; */
         visibility: hidden;

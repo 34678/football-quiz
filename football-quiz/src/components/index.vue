@@ -18,7 +18,7 @@ export default {
   mounted() {
     // 去掉滚动条
     window.localStorage.setItem("hasshare",false);
-    alert("分享了"+window.localStorage['hasshare']);
+    /* alert("分享了"+window.localStorage['hasshare']); */
    /*  document.documentElement.style.width = window.innerWidth + 'px'; */
     /* alert(window.location.href); */
     var str = window.location.href;

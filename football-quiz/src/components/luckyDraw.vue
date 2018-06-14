@@ -48,12 +48,11 @@
           <th v-on:click="goto(item.remark,item.name)" >查看</th>
         </tr>
       </table>
-      <span>我的中奖记录</span>
+      <span style="    font-family: SimHei;
+    font-weight: bold;">我的中奖记录</span>
       
       </div>
       </div>
-   
-   
    <!-- 兑奖流程 -->
        <div class="duijiang">
       <div class="duijiang__wrapper" v-on:click.stop>
@@ -170,7 +169,7 @@ export default {
       /* 在抽一次函数 */
       /* 朋友圈引导 */
       var vm = this;
-      alert("再抽一次是否已经分享"+window.localStorage['hasshare']);
+      /* alert("再抽一次是否已经分享"+window.localStorage['hasshare']); */
       this.hasshare =window.localStorage['hasshare']
       /* alert('是否已经分享'+this.hasshare) */
      /*  debugger; */
@@ -182,13 +181,6 @@ export default {
         vm.type = 'share';
         // 刷新组件
         vm.$refs.draw.__init(vm.type);
-        this.refresh = false
-        this.$nextTick(() => {
-        this.refresh = true
-        })
-       /*  this.$router.push({name:"draw",params:{
-          id:this.id
-        }}); */
       }
       /* 分享朋友圈再回来可以拿到状态 */
     },
@@ -223,7 +215,7 @@ export default {
               vm.$(".myawardlist")[0].style.display = "none";
             });
           } else {
-            alert("请求数据错误");
+           /*  alert("请求数据错误"); */
           }
         })
         .catch(function(response) {
@@ -262,7 +254,7 @@ export default {
                 vm.$(".awardlist")[0].style.display = "none";
               });
           } else {
-            alert("请求问题数据错误");
+           /*  alert("请求问题数据错误"); */
           }
         })
         .catch(function(response) {
@@ -277,7 +269,7 @@ export default {
       window.location.href =  this.mapurl[this.index];
       }else{
         this.$('#duijiangma')[0].style.display = "block";
-        alert('兑奖码'+this.mapurl[this.index]);
+        /* alert('兑奖码'+this.mapurl[this.index]); */
       }
 
     },

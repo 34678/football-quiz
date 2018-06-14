@@ -25,106 +25,81 @@ export default {
         "20元优惠券": 0,
         "30元优惠券": 1,
         "50元优惠券": 2,
-        '全国通兑电影票': 3,
-        '500元优惠券':4
+        全国通兑电影票: 3,
+        "500元优惠券": 4
       },
       index: -1,
       /* 用于计算经过奖品多少次 */
-      count: 0,
-    }
+      count: 0
+    };
   },
-
   mounted() {
     this.__init("answer");
   },
-    props: {
+  props: {
     id: {
       type: String,
       default: ""
     },
-        type: {
+    type: {
       type: String,
       default: "answer"
     },
-      openid: {
+    openid: {
       type: String,
       default: ""
-    },
-    },
+    }
+  },
   methods: {
     __init(type) {
       var vm = this;
-      if(type){
-        vm.type = type
+      if (type) {
+        vm.type = type;
       }
-     /*  debugger; */
+      if (type == "share") {
+        vm.id = "shareid";
+      }
+      /*  alert('drawopenid',vm.openid); */
+      /*  debugger; */
       //请求抽奖结果数据
-     /*  vm.id="sdhajda"; */
-    /*  debugger; */
-  /*   alert('id'+vm.id)
-     alert('open'+vm.openid)
-     alert('open'+type) */
-      if(vm.id&&vm.openid){
-      vm.$.post("https://www.ipareto.com/zeissSjb/draw",{
-              'openid': vm.openid,
-            'answerId': vm.id,
-            "type":vm.type},function(result){
-                   debugger;
-                    /* console.log(result); */
-                    var response = result;
-                 
-                    if (response.msg == "ok") {
-                        alert("抽奖结果"+response.data)
-                        /* var data = "20元优惠券"; */
-                        var data = response.data;
-                     
-                              var index = vm.map[data];
-  
-                              if(index!==3){
-                              
-                               vm.index = index;
-                               vm.$emit('drawdone',[index])
-                              }else{
-                                 vm.index = index;
-                                 vm.$emit('drawdone',[index,response.movieCode])
-                              }
-                           
-                                   /*  console.log("this.$route.params.paicheNo", this.$route.params.id); */
-                             //抽奖成功才轮播
-                          vm.lunboinit();
-                    } else {
-                      alert("抽过奖了");
-                    }
-          });
-     
-      }// this.$http
-      //   .get("https://www.ipareto.com/zeissSjb/draw", {
-      //     params: {
-      //       openid: "oYkYa03gpCorQzWW3GCM-uw10aCo",
-      //       answerId: vm.id
-      //     }
-      //   })
-      //   .then(function(response) {
-      //     response.data.msg = "ok";
-      //     if (response.data.msg == "ok") {
-      //         console.log("抽奖结果"+response.data)
-      //         /* var data = "20元优惠券"; */
-      //         var data = response.data;
-      //               var index = vm.map[data];
-      //               vm.index = index;
-      //     } else {
-      //       alert("请求问题数据错误");
-      //     }
-      //   })
-      //   .catch(function(response) {
-    
-      //     console.log(response);
- 
-      //   });
-      
-
+      /*  vm.id="sdhajda"; */
+      /*  debugger; */
+      /* alert('id'+vm.id)
+      alert('open'+vm.openid)
+      alert('open'+type) */
+      if (vm.id && vm.openid) {
+        vm.$.post(
+          "https://www.ipareto.com/zeissSjb/draw",
+          {
+            "openid": vm.openid,
+            "answerId": vm.id,
+            "type": vm.type
+          },
+          function(result) {
+            debugger;
+            /* console.log(result); */
+            var response = result;
+            if (response.msg == "ok") {
+              /*  alert("抽奖结果"+response.data) */
+              /* var data = "20元优惠券"; */
+              var data = response.data;
+              var index = vm.map[data];
+              if (index !== 3) {
+                vm.index = index;
+                vm.$emit("drawdone", [index]);
+              } else {
+                vm.index = index;
+                vm.$emit("drawdone", [index, response.movieCode]);
+              }
+              vm.lunboinit();
+            } else {
+              /* alert("抽过奖了"); */
+            }
+          }
+        );
+      }
     },
-    lunboinit(){
+    lunboinit() {
       var vm = this;
       //轮播初始化
       var vm = this;
@@ -148,7 +123,7 @@ export default {
     },
     move() {
       /* 没有奖品 返回 */
-      
+
       var vm = this;
       var oUl = vm.$("#div1 ul")[0];
       var speed = vm.speed;
@@ -170,14 +145,14 @@ export default {
       /* !!left在奖品的左边就停下来（为什么left不会用负的奖品的左边index） */
       var index1 = vm.index * oLi[0].offsetWidth;
       // console.log("oUl.offsetLeft", oUl.offsetLeft);
-       
+
       if (vm.count < 2) {
         //可以先执行2次
         vm.timer = requestAnimationFrame(vm.move);
       } else {
         oUl.style.left = -index1 + "px";
         /* 抽奖完成跳到luckdraw */
-       /*  vm.$router.push({
+        /*  vm.$router.push({
           name: "luckyDraw",
           params: {
             'award':vm.index,
@@ -186,9 +161,9 @@ export default {
         }); */
       }
     },
-     move2() {
+    move2() {
       /* 没有奖品 返回 */
-      
+
       var vm = this;
       var oUl = vm.$("#div1 ul")[0];
       var speed = vm.speed;
@@ -210,14 +185,14 @@ export default {
       /* !!left在奖品的左边就停下来（为什么left不会用负的奖品的左边index） */
       var index1 = vm.index * oLi[0].offsetWidth;
       // console.log("oUl.offsetLeft", oUl.offsetLeft);
-       
+
       if (vm.count < 2) {
         //可以先执行2次
         vm.timer = requestAnimationFrame(vm.move);
       } else {
         oUl.style.left = -index1 + "px";
         /* 抽奖完成跳到luckdraw */
-       /*  vm.$router.push({
+        /*  vm.$router.push({
           name: "luckyDraw",
           params: {
             'award':vm.index,
@@ -236,7 +211,7 @@ export default {
   left: 0; */
   /*   width: 100%;
   height: 100%; */
-   /*  margin: 0 auto;
+  /*  margin: 0 auto;
     margin-top: 158px; */
   @include dpr(width, 152px);
   @include dpr(height, 70px);

@@ -92,6 +92,7 @@ export default {
     display: inline-block;
     background-size: cover;
     vertical-align: top;
+        font-family: caisiBold;
     & div:first-child {
       @include dpr(margin-left, 36px);
       @include dpr(margin-top, 33px);

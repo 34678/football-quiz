@@ -1,10 +1,10 @@
 <template>
  <!-- 引导页 -->
-  <div class="guide">
+  <div class="guide" v-on:click="hide()">
       <div class="back" v-on:click="$emit('back')"> <返回</div>
       <!-- 这里需要改成一个箭头的符号 -->
       <img src="../../static/images/share.png">
-      <div class="share">分享到朋友圈即可参与抽奖</div>
+      <div class="share">分享到朋友圈多一次抽奖机会</div>
   </div>
 </template>
 <script>
@@ -16,6 +16,9 @@ export default {
     this.__init();
   },
   methods: {
+    hide(){
+      this.$('.guide')[0].style.display = "none";
+    },
     __init() {
       var vm = this;
     }
@@ -39,11 +42,13 @@ export default {
     float: right;
   }
   .share{
-    font-size: 14px;
+    font-size: 13pt;
     color: white;
-        text-align: right;
+    text-align: right;
     padding-right: 35px;
     margin-top: 37px;
+    font-family: SimHei;
+    font-weight: bold;
   }
   .back {
     color: white;

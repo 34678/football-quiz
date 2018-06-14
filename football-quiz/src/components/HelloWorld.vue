@@ -10,9 +10,8 @@
     <wrong class="wrong" id="wrong"></wrong>
     <result v-on:draw="draw()" :correctTotal="correctTotal"></result>
     <guide v-on:back="back()" ></guide> 
-   <!--  <audio id="bgMusic" src="http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/bg.m4a" loop="loop" preload=”auto”></audio> -->
-     <audio id="right1" src="http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/right.m4a"   loop="loop" preload=”auto”></audio>
-      <audio id="wrong1" src="http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/wrong.mp3"   loop="loop" preload=”auto”></audio>
+     <audio id="right1" src="http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/huanhusheng.mp3"   loop="loop" preload=”auto”></audio>
+      <audio id="wrong1" src="http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/hedaocai.mp3"   loop="loop" preload=”auto”></audio>
     <!-- 测试问题变化 -->
     <!-- <button>clickme</button> -->
   </div>
@@ -96,7 +95,7 @@ export default {
               jsApiList: ["onMenuShareTimeline", "onMenuShareAppMessage"] // 必填，需要使用的JS接口列表
             });
             wx.ready(function() {
-              alert("微信js初始化成功");
+             /*  alert("微信js初始化成功"); */
 
               wx.onMenuShareTimeline({
                 title: "答世界杯题，免费赢取电影票", // 分享标题
@@ -107,7 +106,7 @@ export default {
                 success: function() {
                   // 用户点击了分享后执行的回调函数
                   window.localStorage.setItem("hasshare", true);
-                  alert("分享了" + window.localStorage["hasshare"]);
+                /*   alert("分享了" + window.localStorage["hasshare"]); */
                   vm.hasshare = true;
                 },
                 cancel: function() {}
@@ -123,29 +122,29 @@ export default {
 							imgUrl: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528789842537&di=c9aae9e15fdf1890e37fae56fbd7a478&imgtype=0&src=http%3A%2F%2Fimg2.fengniao.com%2Fproduct%2F95%2F746%2FceZckZsl6oBUA.jpg', // 分享图标
 							success: function() {
 								// 用户点击了分享后执行的回调函数
-                alert('已分享朋友圈');
+                /* alert('已分享朋友圈'); */
                  // 用户点击了分享后执行的回调函数
                   window.localStorage.setItem("hasshare", true);
-                  alert("分享了" + window.localStorage["hasshare"]);
+                  /* alert("分享了" + window.localStorage["hasshare"]); */
                   vm.hasshare = true;
 							},
 							cancel: function() {
-								alert('分享朋友圈被取消');
+								/* alert('分享朋友圈被取消'); */
 							}
 						});
               // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
             });
             wx.error(function(res) {
-              alert("微信js初始化失败：" + res);
+             /*  alert("微信js初始化失败：" + res); */
               // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
             });
           } else {
-            alert("wxshares" + rsp.msg);
+           /*  alert("wxshares" + rsp.msg); */
           }
         })
         .catch(function(response) {
           //错误处理 比如出现一个蒙层显示网络错误
-          alert(response);
+          /* alert(response); */
         });
     },
     back() {
@@ -236,7 +235,7 @@ export default {
     },
     submitScore() {
       var vm = this;
-      alert("submitScoreopenid", vm.openid);
+      /* alert("submitScoreopenid", vm.openid); */
       vm.$.post(
         "https://www.ipareto.com/zeissSjb/submitScore",
         {
@@ -253,7 +252,7 @@ export default {
             vm.id = response.data.id;
             /*  vm.id =  "715282859960308"; */
           } else {
-            alert("请求问题数据错误");
+           /*  alert("请求问题数据错误"); */
           }
         }
       );
@@ -298,7 +297,7 @@ export default {
               vm.answer = vm.questmp[vm.current].correct;
             }
           } else {
-            alert("请求问题数据错误");
+          /*   alert("请求问题数据错误"); */
           }
         })
         .catch(function(response) {

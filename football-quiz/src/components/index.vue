@@ -3,7 +3,7 @@
  <!--  二维码和游戏名称的组件  -->
   <div class="index">
       <img src="../../static/images/bigbg.png">
-      <div class="start" v-on:click="$router.push({name:'HelloWorld',params:{'openid':openid}})">
+      <div class="start" v-on:click="start()">
           <img src="../../static/images/start.png">
       </div>
   </div>
@@ -17,6 +17,8 @@ export default {
   },
   mounted() {
     // 去掉滚动条
+    window.localStorage.setItem("hasshare",false);
+    alert("分享了"+window.localStorage['hasshare']);
    /*  document.documentElement.style.width = window.innerWidth + 'px'; */
     /* alert(window.location.href); */
     var str = window.location.href;
@@ -29,20 +31,29 @@ export default {
         var openid = str.substring(num + 7, num2);
         /* http://localhost/#/?openid=111&aa=1 */
       } else {
-        var openid = str.substring(num + 7);
+        var openid = str.substring(num + 7,str.length-2);
+        
       }
     }
     /*  alert(openid); */
 
     if (openid == "" || !openid) {
-      alert("无openid");
+      /* alert("无openid"); */
     } else {
-      alert("有openid");
+      /* alert("有openid"+openid); */
       this.openid = openid;
     }
   },
   methods: {
-
+start(){
+  debugger;
+  this.$('#bgMusic')[0].play();
+  /* let audio = new Audio();
+  audio.src = "http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/bg.m4a";
+  audio.play(); */
+  this.$router.push({name:'HelloWorld',params:{'openid':this.openid}});
+  
+}
   }
 };
 </script>

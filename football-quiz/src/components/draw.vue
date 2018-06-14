@@ -4,9 +4,9 @@
         <div id="m-top">
             <div id="div1">
                 <ul>
-                    <li id="1"><img src="../../static/images/draw/award/20.png"/></li>
-                    <li id="2"><img src="../../static/images/draw/award/30.png"/></li>
-                    <li id="3"><img src="../../static/images/draw/award/50.png"/></li>
+                    <li id="1"><img src="http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/jd20.jpg"/></li>
+                    <li id="2"><img src="http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/jd30.jpg"/></li>
+                    <li id="3"><img src="http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/jd50.jpg"/></li>
                     <li id="4"><img src="../../static/images/draw/award/movie.png"/></li>
                     <li id="4"><img src="../../static/images/draw/award/500.png"/></li>
                 </ul>
@@ -35,7 +35,7 @@ export default {
   },
 
   mounted() {
-    this.__init();
+    this.__init("answer");
   },
     props: {
     id: {
@@ -52,20 +52,24 @@ export default {
     },
     },
   methods: {
-    __init() {
+    __init(type) {
       var vm = this;
-    /*   debugger; */
+      if(type){
+        vm.type = type
+      }
+     /*  debugger; */
       //请求抽奖结果数据
      /*  vm.id="sdhajda"; */
     /*  debugger; */
-    alert('id'+vm.id)
+  /*   alert('id'+vm.id)
      alert('open'+vm.openid)
+     alert('open'+type) */
       if(vm.id&&vm.openid){
       vm.$.post("https://www.ipareto.com/zeissSjb/draw",{
               'openid': vm.openid,
             'answerId': vm.id,
             "type":vm.type},function(result){
-                 /*   debugger; */
+                   debugger;
                     /* console.log(result); */
                     var response = result;
                  
@@ -232,7 +236,8 @@ export default {
   left: 0; */
   /*   width: 100%;
   height: 100%; */
-
+   /*  margin: 0 auto;
+    margin-top: 158px; */
   @include dpr(width, 152px);
   @include dpr(height, 70px);
   @include dpr(margin-top, 158px);
@@ -242,6 +247,7 @@ export default {
     /* position: absolute;
     top: 40%;
     left: 31%; */
+
     #div1 {
       position: relative;
 

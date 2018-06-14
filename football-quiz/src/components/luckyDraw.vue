@@ -5,7 +5,7 @@
       <!-- 出礼品区 -->
       <div class="draw" >
           <!-- 滚动礼品的组件 --> 
-          <draw v-on:drawdone="drawdone($event)" :type="type" :id="id" :openid="openid" v-if="refresh"></draw>
+          <draw ref="draw" v-on:drawdone="drawdone($event)" :type="type" :id="id" :openid="openid" v-if="refresh"></draw>
          <!--  <div class="myaward" :style="{backgroundImage:'url('+images[currentDraw-1]+')'}"></div> -->
           <div class="duihuan" v-on:click="duihuan()"></div>      
         </div>
@@ -45,7 +45,7 @@
         <tr class="myawardlist__tr" v-for="(item,index) in myawards">
           <th>{{item.name}}</th>
           <th>{{item.createTime}}</th>
-          <th></th>
+          <th v-on:click="goto(item.remark,item.name)" >查看</th>
         </tr>
       </table>
       <span>我的中奖记录</span>
@@ -70,13 +70,29 @@
       </div>
       </div>
       <div id="zhu">音乐：Cheery Monday（来自incompetech.com）</div>
-    <div class="footer">
-            <img src="../../static/images/qrcode.png">
-            <img>
-        <img class="sec" src="../../static/images/gamename.png">
+  <!-- 兑奖码 -->
+  <div id="duijiangma" style="color:white">
+    <div style="text-align: center;
+    color: white;
+    font-size: 17pt;
+    margin-top: 14px;">兑奖码</div>
+    <div style="    text-align: center;
+    margin-top: 47px;
+    font-size: 23pt;">{{remark}}</div>
+    <div class="duijiangma__close" style="color:white;    position: absolute;
+    right: 10px;
+    top: 10px;">x</div>
+    <div style="    color: #FFC107;
+    font-size: 12pt;
+    padding: 0 24px;
+    position: absolute;
+    bottom: 42px;">
+      兑奖说明：<br>
+      复制以上兑换码，微信关注“网票网买影票”，点击菜单栏使用电子码，输入12位电子码并兑换。
     </div>
+  </div>
    <guide v-on:back="back()" ></guide> 
-   <audio id="bgMusic" src="http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/bg.m4a" autoplay="autoplay" loop="loop"></audio>
+  <!--  <audio id="bgMusic" src="http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/bg.m4a"  preload=”auto></audio> -->
   </div>
 </template>
 <script>
@@ -85,6 +101,7 @@ import draw from '../components/draw'
 export default {
   data() {
     return {
+      remark:'',
       openid:"",
       type:'answer',
       refresh:true,
@@ -94,10 +111,11 @@ export default {
         require("../../static/images/draw/2bg.png")
       ],
       images: [
-        require("../../static/images/draw/award/20.png"),
-        require("../../static/images/draw/award/30.png"),
-        require("../../static/images/draw/award/50.png"),
-        require("../../static/images/draw/award/movie.png")
+        "http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/jd20.jpg",
+        "http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/jd30.jpg",
+        "http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/jd50.jpg",
+        require("../../static/images/draw/award/movie.png"),
+        "https://www.ipareto.com/dist/static/images/500.png"
       ],
       awardsList: {},
       /* 奖品总数 */
@@ -117,6 +135,13 @@ export default {
         "4" : 'http://cdn.m2015.cn/zeiss/uv/os/',
 
       },
+      mapurl2: {
+        "20元优惠券": 'http://coupon.m.jd.com/coupons/show.action?key=1b5178199b5f45d689dbe1c2ffb26e07&roleId=12356682&to=mall.jd.com/index-739696.html',
+        "30元优惠券": 'http://coupon.m.jd.com/coupons/show.action?key=e62fb9056c6b4a03841beadf0b3bc298&roleId=12356609&to=mall.jd.com/index-739696.html',
+        "50元优惠券": 'http://coupon.m.jd.com/coupons/show.action?key=62d137163a7d44aaad6f61172a61b20f&roleId=12356526&to=mall.jd.com/index-739696.html',
+        "全国通兑电影票": '',
+        '500元优惠券' : 'http://cdn.m2015.cn/zeiss/uv/os/',
+      },
       myawards: {},
       index: 0,
       /* 请求抽奖接口需要的id */
@@ -125,6 +150,7 @@ export default {
   },
   mounted() {
     this.__init();
+    this.$('#bgMusic')[0].play();
   },
   components: {
     Guide,
@@ -143,13 +169,19 @@ export default {
     drawagain() {
       /* 在抽一次函数 */
       /* 朋友圈引导 */
-      alert('是否已经分享'+this.hasshare)
-      if(!this.hasshare){
+      var vm = this;
+      alert("再抽一次是否已经分享"+window.localStorage['hasshare']);
+      this.hasshare =window.localStorage['hasshare']
+      /* alert('是否已经分享'+this.hasshare) */
+     /*  debugger; */
+      if(this.hasshare == "false" || !this.hasshare){
         this.$(".guide")[0].style.display = "block";
       }else{
         /* 直接抽奖 */
         /* 重新加载一次抽奖 */
         vm.type = 'share';
+        // 刷新组件
+        vm.$refs.draw.__init(vm.type);
         this.refresh = false
         this.$nextTick(() => {
         this.refresh = true
@@ -160,10 +192,20 @@ export default {
       }
       /* 分享朋友圈再回来可以拿到状态 */
     },
+    goto(remark,name){
+      if(remark){
+       /*  debugger; */
+        this.remark = remark;
+        this.$('#duijiangma')[0].style.display = "block";
+      }else{
+        window.location.href = this.mapurl2[name]
+      }
+    },
     myAwards() {
       var vm = this;
       /* 查看我的所有的奖品 */
       /* ！！ */
+    debugger;
       this.$http
         .get(
           "https://www.ipareto.com/zeissSjb/getAwardRecords?openid="+vm.openid,
@@ -230,9 +272,11 @@ export default {
     },
     duihuan() {
       /* 兑换奖品 */
+      debugger;
       if(this.index!==3){
       window.location.href =  this.mapurl[this.index];
       }else{
+        this.$('#duijiangma')[0].style.display = "block";
         alert('兑奖码'+this.mapurl[this.index]);
       }
 
@@ -240,6 +284,11 @@ export default {
     __init() {
       /* 初始化获得奖品的index */
      /*  this.index = this.$route.params.award; */
+     /* 兑奖码 */
+     var vm = this;
+     this.$('.duijiangma__close').on('click',function(){
+       vm.$('#duijiangma')[0].style.display = "none";
+     })
   /*  debugger; */
       this.id = this.$route.params.id;
       this.openid = this.$route.params.openid;
@@ -289,13 +338,29 @@ export default {
 };
 </script>
 <style scoped lang="scss" >
+#duijiangma{
+  display: none;
+  height: 300px;
+  width: 300px;
+  position: absolute;
+  top:50%;
+  left: 50%;
+  margin: -150px 0 0 -150px;
+  background:  #2d3565;
+}
 #zhu{
       text-align: center;
       position: absolute;
-    font-size: 12pt;
+    font-size: 5pt;
     width: 100%;
     bottom: 6px;
     left: 3px;
+/*         text-align: center;
+    position: relative;
+    font-size: 12pt;
+    width: 100%;
+    bottom: 6px;
+    left: 3px; */
 }
 .luckyDraw {
   position: absolute;
@@ -316,10 +381,11 @@ export default {
       background-size: contain;
     }
     .duihuan {
+      margin:0 auto;
       @include dpr(width, 84px);
       @include dpr(height, 34px);
       @include dpr(margin-top, 11px);
-      @include dpr(margin-left, 149px);
+      
       background-image: url("../../static/images/draw/btn/duihuan.png");
       background-size: contain;
       background-repeat: no-repeat;
@@ -354,6 +420,7 @@ export default {
     width: 100%;
   }
   .awardlist {
+    font-family: caisiBold;
     width: 100%;
     height: 100%;
     position: absolute;
@@ -427,6 +494,7 @@ export default {
     }
   }
   .myawardlist {
+    font-family: caisiBold;
     width: 100%;
     height: 100%;
     position: absolute;
@@ -435,6 +503,7 @@ export default {
     background: rgba(0, 0, 0, 0.7);
     font-size: 14pt;
     .myawardlist__wrapper {
+      font-size: 12pt;
       @include dpr(width, 300px);
       @include dpr(height, 300px);
 
@@ -459,13 +528,20 @@ export default {
       }
       tr {
         color: white;
+        & th:nth-child(3){
+          text-decoration: underline;
+        }
       }
       & tr:first-child {
         color: yellow;
+        th{
+          width: 90px;
+        }
       }
     }
   }
   .duijiang {
+    
     width: 100%;
     height: 100%;
     position: absolute;
@@ -501,9 +577,12 @@ export default {
     }
   }
   .footer {
-    position: absolute;
+    position: fixed;
     bottom: 18px;
     width: 100%;
+     /*    position: relative;
+    bottom: 94px;
+    width: 100%; */
 
     & img:first-child {
       @include dpr(width, 52px);

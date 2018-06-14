@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" >
     <div class="main">
       <div id="time"><img :src="images[current]"></div>
       <div class="ques" id="ques">{{question}}</div>
@@ -9,11 +9,10 @@
     <right class="right" id="right"></right>
     <wrong class="wrong" id="wrong"></wrong>
     <result v-on:draw="draw()" :correctTotal="correctTotal"></result>
- 
     <guide v-on:back="back()" ></guide> 
-    <audio id="bgMusic" src="http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/bg.m4a" autoplay="autoplay" loop="loop"></audio>
-     <audio id="right1" src="http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/right.m4a"   loop="loop"></audio>
-      <audio id="wrong1" src="http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/wrong.mp3"   loop="loop"></audio>
+   <!--  <audio id="bgMusic" src="http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/bg.m4a" loop="loop" preload=”auto”></audio> -->
+     <audio id="right1" src="http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/right.m4a"   loop="loop" preload=”auto”></audio>
+      <audio id="wrong1" src="http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/wrong.mp3"   loop="loop" preload=”auto”></audio>
     <!-- 测试问题变化 -->
     <!-- <button>clickme</button> -->
   </div>
@@ -24,7 +23,7 @@ import Answer from "../components/answer";
 import Right from "../components/rightmask";
 import Wrong from "../components/wrongmask";
 import Result from "../components/result";
- 
+
 import Guide from "../components/guide";
 import A from "../../static/images/time/1.png";
 import B from "../../static/images/time/2.png";
@@ -34,7 +33,7 @@ export default {
   name: "HelloWorld",
   data() {
     return {
-      hasshare:false,
+      hasshare: false,
       question: " 2014 年巴西世界杯的吉祥物是什么？",
       option: [1, 2, 3, 4],
       images: [A, B, C, D],
@@ -46,10 +45,9 @@ export default {
       correctTotal: 0,
       RAFId: undefined,
       stop: false,
-      openid:
-        "oYkYa03gpCorQzWW3GCM-uw10aCo",
-        // 答题id
-        id:0
+      openid: "oYkYa03gpCorQzWW3GCM-uw10aCo",
+      // 答题id
+      id: 0
     };
   },
   components: {
@@ -57,37 +55,45 @@ export default {
     Right,
     Wrong,
     Result,
- 
+
     Guide
   },
   mounted() {
-    debugger;
+    // 背景音乐无法播放的问题
+    var vm = this;
     /* document.documentElement.style.width = window.innerWidth-3 + 'px'; */
     this.__init();
-      //  微信初始化
-      this.openid = this.$route.params.openid;
-/*       debugger; */
-     this.wechatshare();
+    //  微信初始化
+    this.openid = this.$route.params.openid;
+    /*       debugger; */
+    this.wechatshare();
+    /*  debugger; */
+
+    /* this.$('#bgMusic')[0].play(); */
   },
   methods: {
-       wechatshare() {
-/*          debugger; */
+    wechatshare() {
+      /*          debugger; */
       var vm = this;
+
       this.$http
-        .get("https://www.ipareto.com/zeissSjb/wechatjs/init", {
-          params: {}
-        })
+        .get(
+          "https://www.ipareto.com/zeissSjb/wechatjs/init?openid=" + vm.openid,
+          {
+            params: {}
+          }
+        )
         .then(function(response) {
           var rsp = response;
-          if (rsp.code == 0) {
-            data = rsp.data;
+          if (rsp.data.code == 0) {
+            var data = rsp.data.data;
             wx.config({
               debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
               appId: data.appId, // 必填，公众号的唯一标识
               timestamp: data.timestamp, // 必填，生成签名的时间戳
               nonceStr: data.nonceStr, // 必填，生成签名的随机串
               signature: data.signature, // 必填，签名
-              jsApiList: ["onMenuShareTimeline"] // 必填，需要使用的JS接口列表
+              jsApiList: ["onMenuShareTimeline", "onMenuShareAppMessage"] // 必填，需要使用的JS接口列表
             });
             wx.ready(function() {
               alert("微信js初始化成功");
@@ -100,20 +106,41 @@ export default {
                   "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528789842537&di=c9aae9e15fdf1890e37fae56fbd7a478&imgtype=0&src=http%3A%2F%2Fimg2.fengniao.com%2Fproduct%2F95%2F746%2FceZckZsl6oBUA.jpg", // 分享图标
                 success: function() {
                   // 用户点击了分享后执行的回调函数
+                  window.localStorage.setItem("hasshare", true);
+                  alert("分享了" + window.localStorage["hasshare"]);
                   vm.hasshare = true;
                 },
                 cancel: function() {}
               });
-
+            //新增
+						wx.hideMenuItems({
+							menuList: ["menuItem:copyUrl", "menuItem:openWithQQBrowser"] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
+						});
+						wx.onMenuShareAppMessage({
+							title: '答世界杯题，免费赢取电影票', // 分享标题
+							desc: '答世界杯题，免费赢取电影票', // 分享描述
+							link: 'https://www.ipareto.com/zeissSjb/wechat/authorize?returnUrl=https://www.ipareto.com/dist/index.html', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+							imgUrl: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528789842537&di=c9aae9e15fdf1890e37fae56fbd7a478&imgtype=0&src=http%3A%2F%2Fimg2.fengniao.com%2Fproduct%2F95%2F746%2FceZckZsl6oBUA.jpg', // 分享图标
+							success: function() {
+								// 用户点击了分享后执行的回调函数
+                alert('已分享朋友圈');
+                 // 用户点击了分享后执行的回调函数
+                  window.localStorage.setItem("hasshare", true);
+                  alert("分享了" + window.localStorage["hasshare"]);
+                  vm.hasshare = true;
+							},
+							cancel: function() {
+								alert('分享朋友圈被取消');
+							}
+						});
               // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
             });
             wx.error(function(res) {
               alert("微信js初始化失败：" + res);
-
               // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
             });
           } else {
-            console.log(rsp.msg);
+            alert("wxshares" + rsp.msg);
           }
         })
         .catch(function(response) {
@@ -134,12 +161,16 @@ export default {
       vm.stop = true;
       vm.$("canvas").remove();
       /* 进入抽奖组件 */
-    /*   debugger; */
-      vm.$router.push({name:"luckyDraw",params:{
-        id:vm.id,
-        openid:vm.openid,
-        hasshare:vm.hasshare
-      }});
+      /*   debugger; */
+      this.$("#bgMusic")[0].pause();
+      vm.$router.push({
+        name: "luckyDraw",
+        params: {
+          id: vm.id,
+          openid: vm.openid,
+          hasshare: vm.hasshare
+        }
+      });
     },
     choose(val) {
       // 判断答案是否正确
@@ -147,31 +178,31 @@ export default {
       /* debugger; */
       if (val == this.answer) {
         // 播放音乐
-        vm.$('#right1')[0].play();
+        vm.$("#right1")[0].play();
         /* alert('正确') */
         this.$("#right")[0].style.display = "block";
         setTimeout(function() {
           // 停止音乐
-          vm.$('#right1')[0].pause();
+          vm.$("#right1")[0].pause();
           vm.$("#right")[0].style.display = "none";
           /* 红色球的颜色要弄回去 */
           vm.$refs.answer.biaohei(vm.answer);
           vm.newQuestion();
-        }, 3000);
+        }, 200);
         vm.correctTotal++;
         console.log("答对题目数量", vm.correctTotal);
       } else {
         /* alert('错误') */
-         vm.$('#wrong1')[0].play();
+        vm.$("#wrong1")[0].play();
         // 播放音乐
         this.$("#wrong")[0].style.display = "block";
         setTimeout(function() {
           // 停止音乐
-          vm.$('#wrong1')[0].pause();
+          vm.$("#wrong1")[0].pause();
           vm.$("#wrong")[0].style.display = "none";
           vm.$refs.answer.biaohei(vm.answer);
           vm.newQuestion();
-        }, 3000);
+        }, 200);
       }
       this.$refs.answer.biaohong(this.answer, this.current);
     },
@@ -197,27 +228,35 @@ export default {
         vm.option = res;
         vm.question = vm.questmp[vm.current].title;
         vm.answer = vm.questmp[vm.current].correct;
+
+        if (vm.current == 3) {
+          vm.$refs.answer.biaohongcaisi();
+        }
       }
     },
     submitScore() {
       var vm = this;
-      vm.$.post("https://www.ipareto.com/zeissSjb/submitScore",{
-        'openid': vm.openid,
-            'score': vm.correctTotal},function(result){
-             
-              /* console.log(result); */
-            
-              var response = result;
-         
-              if (response.msg == "ok") {
-                /* console.log(response.data); */
-                vm.id = response.data.id;
-               /*  vm.id =  "715282859960308"; */
-              
-              } else {
-                alert("请求问题数据错误");
-              }
-    });
+      alert("submitScoreopenid", vm.openid);
+      vm.$.post(
+        "https://www.ipareto.com/zeissSjb/submitScore",
+        {
+          openid: vm.openid,
+          score: vm.correctTotal
+        },
+        function(result) {
+          /* console.log(result); */
+
+          var response = result;
+
+          if (response.msg == "ok") {
+            /* console.log(response.data); */
+            vm.id = response.data.id;
+            /*  vm.id =  "715282859960308"; */
+          } else {
+            alert("请求问题数据错误");
+          }
+        }
+      );
     },
     __init() {
       var vm = this;
@@ -229,12 +268,12 @@ export default {
           vm.question = "大力神杯是由谁颁给世界杯冠军？";
       }) */
       // 初始化问题的位置
-      var ele = document.getElementById("ques");
-      var height = -20 - ele.clientHeight / 2;
-      var width = 0 - ele.clientWidth / 2;
+      // var ele = document.getElementById("ques");
+      // var height = -20 - ele.clientHeight / 2;
+      // var width = 0 - ele.clientWidth / 2;
 
-      ele.style.marginLeft = width + "px";
-      ele.style.marginTop = height + "px";
+      // ele.style.marginLeft = width + "px";
+      // ele.style.marginTop = height + "px";
       //获取问题数据
       this.$http
         .get("https://www.ipareto.com/zeissSjb/getTimus", {
@@ -525,12 +564,16 @@ export default {
   },
   watch: {
     question: function(val) {
-      var ele = document.getElementById("ques");
+      /*     var ele = document.getElementById("ques");
       var height = -20 - ele.clientHeight / 2;
       var width = 0 - ele.clientWidth / 2;
 
       ele.style.marginLeft = width + "px";
       ele.style.marginTop = height + "px";
+        if(val.indexOf('头球破门')!==-1){
+            this.$('.ques')[0].style.marginLeft = '-103px';
+            this.$('.ques')[0].style.marginTop =  '-38px';
+        } */
     }
   }
 };
@@ -544,15 +587,27 @@ export default {
   width: 100%;
 }
 .ques {
-  position: absolute;
+  /* position: absolute;
   top: 50%;
   left: 50%;
   color: white;
   width: 55%;
-
+ font-family: caisiBold;
   font-size: 16pt;
   line-height: 16pt;
+  text-align: center; */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: white;
+  /* width: 55%; */
+  font-family: caisiBold;
+  font-size: 12pt;
+  line-height: 12pt;
   text-align: center;
+  width: 170px;
+  height: 65px;
+  margin: -32.5px 0 0 -85px;
 }
 </style>
 <style scoped lang="scss" >

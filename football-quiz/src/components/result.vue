@@ -11,13 +11,13 @@
         <img src="../../static/images/result/drawbtn.png">
         
         </div>
-          <div id="zhu">音乐：Cheery Monday（来自incompetech.com）</div>
-          <div class="footer">
+          <!-- <div id="zhu">音乐：Cheery Monday（来自incompetech.com）</div> -->
+          <!-- <div class="footer">
             <img src="../../static/images/qrcode.png">
             <img>
         <img class="sec" src="../../static/images/gamename.png">
-        <audio id="bgMusic" src="http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/bg.m4a" autoplay="autoplay" loop="loop"></audio>
-    </div>
+        
+    </div> -->
   </div>
   
 </template>
@@ -33,7 +33,7 @@ export default {
         return{
                  Images:[Image0,Image1,Image2,Image3,Image4],
                  text1:['伪球迷','伪球迷','铁杆粉','懂球帝','MVP'],
-                 text2:['修炼失败，需要回炉重造一下','修炼失败，需要回炉重造一下','万事俱备，只差一pick','认过眼神，是会踢球的人','国足就靠你振兴了！']
+                 text2:['修炼失败，需要回炉重造一下','修炼失败，需要回炉重造一下','万事俱备，只差一pick','确认过眼神，是会踢球的人','国足就靠你振兴了！']
         }
     },
    
@@ -66,8 +66,8 @@ export default {
       position: absolute;
   /*       top: 392px;
     right: 22px; */
-       @include dpr(bottom, 20%);
-    @include dpr(right, 5%);
+       @include dpr(bottom, 18%);
+    @include dpr(right,11%);
     line-height: 37pt;
   color:white;
   .first{
@@ -76,7 +76,7 @@ export default {
   }
   .second{
 font-family: caisiNormal;
-    font-size:12pt;
+    font-size:10pt;
   }
 }
 #zhu{
@@ -97,9 +97,10 @@ img{
     margin-top: 11px;
         z-index: 2;
     position: relative;
+    margin-bottom: 80px;
 }
   .footer{
-        position: absolute;
+        position: fixed;
     bottom: 18px;
     width: 100%;
 

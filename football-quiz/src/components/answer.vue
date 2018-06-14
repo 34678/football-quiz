@@ -40,6 +40,7 @@ export default {
       default: []
     }
   },
+  
   mounted() {
     this.__init();
   },
@@ -49,12 +50,15 @@ export default {
 
       /*  this.$refs[val].style.backgroundImage = this.map[val] */
       this.$refs[val].style.backgroundImage = "url(" + this.map[val] + ")";
-      if(current ===3){
-       /*  debugger; */
-          this.$('.caisi')[0].style.fontSize = "22pt"
-      }
+      /* if(current ===3){
+        
+          this.$('.caisi')[0].style.color = "red"
+      } */
       /*  this.$refs[val].style.background = "black" */
       /*  console.log(this.map[val]) */
+    },
+    biaohongcaisi(){
+      this.$('.caisi')[0].style.color = "red"
     },
     biaohei(val) {
       this.$refs[val].style.backgroundImage = "";
@@ -99,7 +103,7 @@ export default {
     & div:nth-child(2) {
       color: white;
       font-size: 14pt;
-      @include dpr(margin-top, 46px);
+      @include dpr(margin-top, 35px);
       text-align: center;
     }
   }

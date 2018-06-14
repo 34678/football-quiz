@@ -2,21 +2,25 @@
 html,body{
     height: 100%;
     width: 100%;
-    font-family: caisiNormal!important;
+   /*  font-family: caisiNormal!important; */
     overflow-x: hidden;
+    overflow: hidden;
 }
 body{
     position: fixed;
 }
 @font-face
 {
-font-family: caisiNormal;
+/* font-family: caisiNormal;
 src: url( "../../../static/font/normal/MYingHeiPRC-W3.ttf"  ),
-    url( "../../../static/font/normal/MYingHeiPRC-W3.eot" ) /* IE9+ */
+    url( "../../../static/font/normal/MYingHeiPRC-W3.eot" ) */ /* IE9+ */
+   /*  src: url( "http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/MYingHeiPRC-W3.eot"  ),
+    url( "http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/MYingHeiPRC-W3.ttf" )  */
 }
 @font-face
 {
-font-family: caisiBold;
+/* font-family: caisiBold; */
 /* 需要加上防止浏览器不兼容 */
-src: url( "../../../static/font/bold/MYingHeiPRC-W7.ttf" );
+/* src: url( "../../../static/font/bold/MYingHeiPRC-W7.ttf" ); */
+/* src: url( "http://testpublic-1252461635.cosgz.myqcloud.com/zuiyoujie/%E8%94%A1%E5%8F%B8%E4%B8%96%E7%95%8C%E6%9D%AF%E6%96%87%E4%BB%B6/MYingHeiPRC-W7.ttf" ); */
 }
